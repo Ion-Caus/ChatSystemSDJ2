@@ -1,5 +1,7 @@
 package external.log;
 
+import model.DateTime;
+
 public class LogLine
 {
   private DateTime dateTime;
