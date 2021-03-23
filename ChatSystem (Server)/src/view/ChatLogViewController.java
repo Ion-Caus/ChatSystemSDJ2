@@ -1,5 +1,5 @@
 package view;
 
-public class ChatLogViewController
+public class ChatLogViewController extends ViewController
 {
 }

@@ -1,5 +1,5 @@
 package view;
 
-public class ViewHandler
+public class ViewHandler extends ViewCreator
 {
 }

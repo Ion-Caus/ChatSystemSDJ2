@@ -1,5 +1,5 @@
 package view;
 
-public class LoginChatViewController
+public class LoginChatViewController extends ViewController
 {
 }
