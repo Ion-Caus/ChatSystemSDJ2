@@ -8,7 +8,7 @@ public class UserName
   {
     if (username == null || username.length() < 3)
       throw new IllegalArgumentException("Username must have at least 3 characters");
-    if (username.length() > 100)
+    if (username.length() > 20)
       throw new IllegalArgumentException("Username cannot have more than 100 characters");
 
     this.name = username;
