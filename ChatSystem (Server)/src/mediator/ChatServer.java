@@ -7,14 +7,15 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class UserConnector implements Runnable
+public class ChatServer implements Runnable
 {
   private final int PORT = 6789;
-  private Model model;
   private boolean running;
   private ServerSocket welcomeSocket;
 
-  public UserConnector(Model model)
+  private Model model;
+
+  public ChatServer(Model model)
   {
     this.model = model;
   }
@@ -34,7 +35,7 @@ public class UserConnector implements Runnable
         Socket socket = welcomeSocket.accept();
         Log.getLog().addLog("Client (" + socket.getInetAddress().getHostName() + ") connected.");
 
-        UserClientHandler clientHandler = new UserClientHandler();
+        ChatClientHandler clientHandler = new ChatClientHandler(socket, model);
         Thread clientThread = new Thread(clientHandler);
         clientThread.setDaemon(true);
         clientThread.start();
