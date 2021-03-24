@@ -25,7 +25,29 @@ public class ViewHandler extends ViewCreator
 
   public void openView(View id)
   {
+    Region root = null;
+    switch (id)
+    {
+      case LOGIN:
+        root = getViewController(View.LOGIN).getRoot();
+        break;
 
+      case CHAT:
+        root = getViewController(View.CHAT).getRoot();
+        break;
+    }
+    currentScene.setRoot(root);
+
+    String title = "";
+    if (root.getUserData() != null)
+    {
+      title += root.getUserData();
+    }
+    primaryStage.setTitle(title);
+    primaryStage.setScene(currentScene);
+    primaryStage.setWidth(root.getPrefWidth());
+    primaryStage.setHeight(root.getPrefHeight());
+    primaryStage.show();
   }
 
   @Override

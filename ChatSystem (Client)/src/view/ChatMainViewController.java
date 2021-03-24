@@ -46,8 +46,8 @@ public class ChatMainViewController extends ViewController
     // TODO
   }
 
-  public void onEnter()
+  @FXML private void onEnter()
   {
-    // TODO sends a message
+    sendMessage();
   }
 }
