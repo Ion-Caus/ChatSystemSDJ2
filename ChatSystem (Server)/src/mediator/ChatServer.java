@@ -1,6 +1,6 @@
 package mediator;
 
-import external.log.Log;
+import external.Log;
 import model.Model;
 
 import java.io.IOException;

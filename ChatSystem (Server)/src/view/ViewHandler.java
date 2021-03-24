@@ -28,9 +28,9 @@ public class ViewHandler extends ViewCreator
 
   }
 
-  @Override protected void initViewController(ViewController controller,
-      Region root)
+  @Override
+  protected void initViewController(ViewController controller, Region root)
   {
-
+    controller.init(this, viewModelFactory, root);
   }
 }

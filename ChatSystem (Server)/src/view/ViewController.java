@@ -15,14 +15,16 @@ public abstract class ViewController
     // FXML loader
   }
 
-  protected abstract void init();
-
   public void init(ViewHandler viewHandler, ViewModelFactory viewModelFactory, Region root)
   {
     this.viewHandler = viewHandler;
     this.viewModelFactory = viewModelFactory;
     this.root = root;
+
+    init();
   }
+
+  protected abstract void init();
 
   public void reset()
   {

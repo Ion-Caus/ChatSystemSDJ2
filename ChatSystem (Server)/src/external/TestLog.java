@@ -1,4 +1,4 @@
-package external.log;
+package external;
 
 public class TestLog
 {
