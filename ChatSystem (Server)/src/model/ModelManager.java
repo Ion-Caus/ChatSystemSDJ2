@@ -1,12 +1,25 @@
 package model;
 
+import external.log.Log;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
 public class ModelManager implements Model
 {
   private UserList users;
+  private PropertyChangeSupport propertyChangeSupport;
 
   public ModelManager()
   {
     this.users = new UserList();
+    this.propertyChangeSupport = new PropertyChangeSupport(this);
+  }
+
+   public synchronized void addMessage(String message)
+  {
+    Log.getLog().addLog(message);
+    propertyChangeSupport.firePropertyChange("Message", null, message);
   }
 
   @Override public int getNumberOfUsers()
@@ -47,5 +60,17 @@ public class ModelManager implements Model
   @Override public boolean contains(User user)
   {
     return users.contains(user);
+  }
+
+  @Override public void addListener(String propertyName,
+      PropertyChangeListener listener)
+  {
+    propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
+  }
+
+  @Override public void removeListener(String propertyName,
+      PropertyChangeListener listener)
+  {
+    propertyChangeSupport.removePropertyChangeListener(propertyName, listener);
   }
 }

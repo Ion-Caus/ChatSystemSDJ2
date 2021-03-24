@@ -21,9 +21,7 @@ public class Message
     this.message = message;
   }
 
-  public Message(User user) {
-    this.user = user;
-  }
+  public User getUser()  {    return user;  }
 
   public String getType() {
     return type;
@@ -31,5 +29,11 @@ public class Message
 
   public String getMessage() {
     return message;
+  }
+
+
+  @Override public String toString()
+  {
+    return String.format("%s, %s :, %s \n",type, user, message);
   }
 }
