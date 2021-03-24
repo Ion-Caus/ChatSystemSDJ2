@@ -35,5 +35,5 @@ public class ChatLogViewModel
       //model.addMessage(message.get()); potential model modifications needed
     }
   }
-  
+
 }

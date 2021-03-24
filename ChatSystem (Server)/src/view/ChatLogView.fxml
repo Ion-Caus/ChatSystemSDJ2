@@ -12,14 +12,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="456.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LogViewController">
+<AnchorPane prefHeight="456.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ChatLogViewController">
    <children>
       <ImageView fitHeight="456.0" fitWidth="710.0" style="-fx-opacity: 0.8;">
          <image>
             <Image url="@12.jpg" />
          </image>
       </ImageView>
-      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="456.0" prefWidth="710.0" stylesheets="view/Layout.css" userData="Uppercase log">
+      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="456.0" prefWidth="710.0"  userData="Uppercase log">
           <children>
               <HBox alignment="TOP_CENTER" prefHeight="47.0" prefWidth="600.0">
                   <children>
