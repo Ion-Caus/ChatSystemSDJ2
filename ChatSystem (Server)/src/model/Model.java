@@ -14,4 +14,5 @@ public interface Model extends NamedPropertyChangeSubject
   public void addUser(String userName)
       throws IllegalStateException, IllegalArgumentException;
   public boolean contains(User user);
+  public void addMessage(String message);
 }

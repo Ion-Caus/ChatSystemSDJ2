@@ -9,4 +9,9 @@ public class ViewModelFactory
   public ViewModelFactory(Model model){
     this.chatLogViewModel = new ChatLogViewModel(model);
   }
+
+  public ChatLogViewModel getChatLogViewModel()
+  {
+    return chatLogViewModel;
+  }
 }

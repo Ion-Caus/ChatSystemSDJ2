@@ -10,7 +10,7 @@ import model.Model;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class ChatLogViewModel
+public class ChatLogViewModel implements PropertyChangeListener
 {
   private Model model;
   private ObservableList<String> logs;
@@ -20,6 +20,7 @@ public class ChatLogViewModel
     this.model = model;
     this.logs = FXCollections.observableArrayList();
     this.message = new SimpleStringProperty();
+    model.addListener("Log", this);
   }
 
   public ObservableList<String> getLogs() {
@@ -32,8 +33,12 @@ public class ChatLogViewModel
 
   public void setMessage() {
     if (!message.get().isEmpty()) {
-      //model.addMessage(message.get()); potential model modifications needed
+      model.addMessage(message.get()); //potential model modifications needed
     }
   }
 
+  @Override public void propertyChange(PropertyChangeEvent evt)
+  {
+    Platform.runLater(() -> logs.add(0, (String)evt.getNewValue()));
+  }
 }
