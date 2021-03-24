@@ -5,32 +5,41 @@ import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import viewmodel.ViewModelFactory;
 
-public class ViewHandler extends ViewCreator
-{
-  private Scene currentScene;
-  private Stage primaryStage;
-  private ViewModelFactory viewModelFactory;
+public class ViewHandler extends ViewCreator {
+    private Scene currentScene;
+    private Stage primaryStage;
+    private ViewModelFactory viewModelFactory;
 
-  public ViewHandler(ViewModelFactory viewModelFactory)
-  {
-    this.viewModelFactory = viewModelFactory;
-    this.currentScene = new Scene(new Region());
-  }
+    public ViewHandler(ViewModelFactory viewModelFactory) {
+        this.viewModelFactory = viewModelFactory;
+        this.currentScene = new Scene(new Region());
+    }
 
-  public void start(Stage primaryStage)
-  {
-    this.primaryStage = primaryStage;
-    openView(View.CHATLOG);
-  }
+    public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+        openView(View.CHATLOG);
+    }
 
-  public void openView(View id)
-  {
+    public void openView(View view) {
+        Region root = getViewController(view).getRoot();
 
-  }
+        currentScene.setRoot(root);
 
-  @Override
-  protected void initViewController(ViewController controller, Region root)
-  {
-    controller.init(this, viewModelFactory, root);
-  }
+        String title = "";
+        assert root != null;
+        if (root.getUserData() != null)
+        {
+            title += root.getUserData();
+        }
+        primaryStage.setTitle(title);
+        primaryStage.setScene(currentScene);
+        primaryStage.setWidth(root.getPrefWidth());
+        primaryStage.setHeight(root.getPrefHeight());
+        primaryStage.show();
+    }
+
+    @Override
+    protected void initViewController(ViewController controller, Region root) {
+        controller.init(this, viewModelFactory, root);
+    }
 }

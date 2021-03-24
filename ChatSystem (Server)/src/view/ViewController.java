@@ -3,46 +3,37 @@ package view;
 import javafx.scene.layout.Region;
 import viewmodel.ViewModelFactory;
 
-public abstract class ViewController
-{
+public abstract class ViewController {
 
-  private Region root;
-  private ViewHandler viewHandler;
-  private ViewModelFactory viewModelFactory;
+    private Region root;
+    private ViewHandler viewHandler;
+    private ViewModelFactory viewModelFactory;
 
-  public ViewController()
-  {
-    // FXML loader
-  }
+    public ViewController() {
+        // FXML loader
+    }
 
-  public void init(ViewHandler viewHandler, ViewModelFactory viewModelFactory, Region root)
-  {
-    this.viewHandler = viewHandler;
-    this.viewModelFactory = viewModelFactory;
-    this.root = root;
+    public void init(ViewHandler viewHandler, ViewModelFactory viewModelFactory, Region root) {
+        this.viewHandler = viewHandler;
+        this.viewModelFactory = viewModelFactory;
+        this.root = root;
 
-    init();
-  }
+        init();
+    }
 
-  protected abstract void init();
+    protected abstract void init();
 
-  public void reset()
-  {
-    // TODO
-  }
+    public abstract void reset();
 
-  public Region getRoot()
-  {
-    return root;
-  }
+    public Region getRoot() {
+        return root;
+    }
 
-  public ViewModelFactory getViewModelFactory()
-  {
-    return viewModelFactory;
-  }
+    public ViewModelFactory getViewModelFactory() {
+        return viewModelFactory;
+    }
 
-  public ViewHandler getViewHandler()
-  {
-    return viewHandler;
-  }
+    public ViewHandler getViewHandler() {
+        return viewHandler;
+    }
 }
