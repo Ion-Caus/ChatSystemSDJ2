@@ -36,7 +36,7 @@
                         <Blend />
                      </effect>
                   </Label>
-                  <TextField style="-fx-background-radius: 25;">
+                  <TextField fx:id="usernameField" onAction="#onEnter" style="-fx-background-radius: 25;">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -48,7 +48,7 @@
                   <Insets left="130.0" />
                </padding>
                <children>
-                  <Label prefHeight="27.0" prefWidth="246.0" text="Error label" textFill="#fa0606">
+                  <Label prefHeight="27.0" prefWidth="246.0" fx:id="errorLabel" text="Error label" textFill="#fa0606">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -57,7 +57,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="55.0" prefWidth="600.0">
                <children>
-                  <Button alignment="CENTER" mnemonicParsing="false" prefHeight="44.0" prefWidth="249.0" style="-fx-background-radius: 25;" text="Login">
+                  <Button alignment="CENTER" mnemonicParsing="false" prefHeight="44.0" prefWidth="249.0" onAction="#loginPressed"  style="-fx-background-radius: 25;" text="Login">
                      <font>
                         <Font size="20.0" />
                      </font>

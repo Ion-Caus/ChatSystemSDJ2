@@ -9,8 +9,6 @@ import viewmodel.ChatLogViewModel;
 
 public class ChatLogViewController extends ViewController
 {
-
-
   @FXML private ListView<String> logList;
   @FXML private TextField inputField;
 
@@ -41,5 +39,9 @@ public class ChatLogViewController extends ViewController
     inputField.setText("");
   }
 
-
+  public void broadcastMessage()
+  {
+    viewModel.setMessage();
+    inputField.setText("");
+  }
 }

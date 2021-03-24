@@ -47,7 +47,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="57.0" prefWidth="710.0">
                <children>
-                  <Button mnemonicParsing="false" style="-fx-background-radius: 25;" text="Broadcast">
+                  <Button mnemonicParsing="false" style="-fx-background-radius: 25;" onAction="#broadcastMessage" text="Broadcast">
                      <font>
                         <Font size="17.0" />
                      </font>
