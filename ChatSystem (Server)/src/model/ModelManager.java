@@ -1,6 +1,6 @@
 package model;
 
-import external.log.Log;
+import external.Log;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
