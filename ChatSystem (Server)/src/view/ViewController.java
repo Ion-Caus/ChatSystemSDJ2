@@ -5,21 +5,14 @@ import viewmodel.ViewModelFactory;
 
 public abstract class ViewController
 {
-  public enum View
-  {
-    CHATLOG;
-  }
 
   private Region root;
   private ViewHandler viewHandler;
   private ViewModelFactory viewModelFactory;
 
-  private View key;
-
-  public ViewController(View key)
+  public ViewController()
   {
     // FXML loader
-    this.key = key;
   }
 
   protected abstract void init();
@@ -33,8 +26,7 @@ public abstract class ViewController
 
   public void reset()
   {
-    // TO DO
-
+    // TODO
   }
 
   public Region getRoot()

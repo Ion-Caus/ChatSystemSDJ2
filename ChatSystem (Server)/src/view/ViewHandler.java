@@ -20,10 +20,10 @@ public class ViewHandler extends ViewCreator
   public void start(Stage primaryStage)
   {
     this.primaryStage = primaryStage;
-    openView();
+    openView(View.CHATLOG);
   }
 
-  public void openView(ViewController.View id)
+  public void openView(View id)
   {
 
   }

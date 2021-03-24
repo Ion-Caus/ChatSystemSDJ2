@@ -5,35 +5,17 @@ import java.util.Map;
 
 public class ChatLogViewController extends ViewController
 {
-  private static Map<View, ChatLogViewController> allInstances = new HashMap<>();
 
   private ChatLogViewController(View key)
   {
     super(key);
   }
 
-  @Override protected void init()
-  {
-    getInstance(View.CHATLOG);
+  @Override protected void init() {
+
   }
 
-  public static ChatLogViewController getInstance(View key)
-  {
-    ChatLogViewController instance = allInstances.get(key);
-    if (instance == null)
-    {
-      synchronized (allInstances)
-      {
-        instance = allInstances.get(key);
-        if (instance == null)
-        {
-          instance = new ChatLogViewController(key);
-          allInstances.put(key, instance);
-        }
-      }
-    }
-    return instance;
-  }
+
   /*
   @FXML private ListView<String> logList;
   @FXML private TextField inputField;
