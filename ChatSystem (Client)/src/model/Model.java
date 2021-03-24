@@ -1,6 +1,6 @@
 package model;
 
-import utility.observer.UnnamedPropertyChangeSubject;
+import utility.observer.NamedPropertyChangeSubject;
 
-public interface Model  extends UnnamedPropertyChangeSubject {
+public interface Model  extends NamedPropertyChangeSubject {
 }
