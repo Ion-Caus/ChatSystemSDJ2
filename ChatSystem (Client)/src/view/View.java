@@ -3,7 +3,7 @@ package view;
 public enum View
 {
     LOGIN("ChatLoginView.fxml"),
-    CHAT("MainChatView.fxml");
+    CHAT("ChatMainView.fxml");
 
     private String fxmlFile;
 

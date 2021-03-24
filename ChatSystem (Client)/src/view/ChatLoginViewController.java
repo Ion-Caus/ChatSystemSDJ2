@@ -1,6 +1,6 @@
 package view;
 
-public class MainChatViewController extends ViewController
+public class ChatLoginViewController extends ViewController
 {
   @Override protected void init() {
 
