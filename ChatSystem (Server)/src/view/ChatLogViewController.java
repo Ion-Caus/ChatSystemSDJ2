@@ -1,46 +1,36 @@
 package view;
 
+import javafx.fxml.FXML;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.Region;
+import viewmodel.ChatLogViewModel;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class ChatLogViewController extends ViewController
 {
 
-  private ChatLogViewController()
-  {
 
-  }
-
-  @Override protected void init() {
-
-  }
-
-
-  /*
   @FXML private ListView<String> logList;
   @FXML private TextField inputField;
 
   private Region root;
-  private LogViewModel viewModel;
+  private ChatLogViewModel viewModel;
   private ViewHandler viewHandler;
   public View key;
 
-  public ChatLogViewController(View key)
+  public ChatLogViewController()
   {
-    super(key);
   }
 
-  public void init(ViewHandler viewHandler, LogViewModel viewModel, Region root) {
-    this.viewHandler = viewHandler;
-    this.viewModel = viewModel;
-    this.root = root;
-
+  @Override protected void init() {
     this.inputField.textProperty().bindBidirectional(viewModel.getMessageProperty());
     this.logList.setItems(viewModel.getLogs());
   }
 
   public void reset() {
-    // do nothing
   }
 
   public Region getRoot() {
@@ -52,6 +42,6 @@ public class ChatLogViewController extends ViewController
     viewModel.setMessage();
     inputField.setText("");
   }
-   */
+
 
 }
