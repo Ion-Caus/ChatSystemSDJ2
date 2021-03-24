@@ -1,6 +1,8 @@
 package model;
 
-public interface Model
+import utility.observer.subject.NamedPropertyChangeSubject;
+
+public interface Model extends NamedPropertyChangeSubject
 {
   public int getNumberOfUsers();
   public User getUser(int index) throws IndexOutOfBoundsException;
