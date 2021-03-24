@@ -1,4 +1,4 @@
-package external;
+package external.log;
 
 import model.DateTime;
 

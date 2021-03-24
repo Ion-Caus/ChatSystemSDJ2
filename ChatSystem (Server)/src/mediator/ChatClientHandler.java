@@ -1,7 +1,7 @@
 package mediator;
 
 import com.google.gson.Gson;
-import external.Log;
+import external.log.Log;
 import javafx.application.Platform;
 import model.Model;
 
@@ -57,7 +57,7 @@ public class ChatClientHandler implements Runnable, PropertyChangeListener
 
 
         // need to somehow show the username in this message
-        String replyJson = null; // gson.toJson(new Message(null, "type", reply)); // no user, no type
+        String replyJson = gson.toJson(new Message(null, "type", reply)); // no user, no type
 
         // need to broadcast it to everyone instead of only to the client
         out.println(replyJson);
@@ -94,8 +94,7 @@ public class ChatClientHandler implements Runnable, PropertyChangeListener
   @Override public void propertyChange(PropertyChangeEvent evt)
   {
     Platform.runLater(() -> out.println(
-        //gson.toJson(new Message(null,"Message", (String) evt.getNewValue()))
-    ));
+        gson.toJson(new Message(null,"Message", (String) evt.getNewValue())))); //need to think about variables
 
   }
 }
