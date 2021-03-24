@@ -4,6 +4,6 @@ import java.beans.PropertyChangeListener;
 
 public interface NamedPropertyChangeSubject
 {
-  void addListener(PropertyChangeListener listener);
-  void removeListener(PropertyChangeListener listener);
+  void addListener(String nameProperty, PropertyChangeListener listener);
+  void removeListener(String nameProperty, PropertyChangeListener listener);
 }

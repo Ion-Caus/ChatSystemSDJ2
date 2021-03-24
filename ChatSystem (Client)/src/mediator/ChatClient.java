@@ -70,13 +70,13 @@ public class ChatClient implements Model {
 
 
     @Override
-    public void addListener(PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(listener);
+    public void addListener(String nameProperty, PropertyChangeListener listener) {
+        propertyChangeSupport.addPropertyChangeListener(nameProperty, listener);
 
     }
 
     @Override
-    public void removeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.removePropertyChangeListener(listener);
+    public void removeListener(String nameProperty, PropertyChangeListener listener) {
+        propertyChangeSupport.removePropertyChangeListener(nameProperty, listener);
     }
 }
