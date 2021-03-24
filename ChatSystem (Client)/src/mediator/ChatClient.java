@@ -1,29 +1,39 @@
 package mediator;
 
+import com.google.gson.Gson;
 import model.Model;
 
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.lang.reflect.Type;
 import java.net.Socket;
+import java.util.function.ToDoubleBiFunction;
 
 public class ChatClient implements Model {
     private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
-    private PropertyChangeSupport propertyChangeSupport;
+    private Gson gson;
 
+
+    private PropertyChangeSupport propertyChangeSupport;
+    private Message message;
     private Model model;
 
-    public ChatClient(Model model, String host, int port) throws IOException {
+    public ChatClient(Model model, String host, int port, Message message) throws IOException {
         this.socket = new Socket(host, port);
+        this.model = model;
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.out = new PrintWriter(socket.getOutputStream(), true);
-        this.model = model;
+        this.message=message;
+
         propertyChangeSupport= new PropertyChangeSupport(this);
-        ChatClientReader chatClientReader = new ChatClientReader();
+        ChatClientReader chatClientReader = new ChatClientReader(socket);
+
 
         Thread chatClientReaderThread= new Thread(chatClientReader);
         chatClientReaderThread.setDaemon(true);
@@ -34,13 +44,39 @@ public class ChatClient implements Model {
 
 
     public void disconnect() throws IOException {
-        socket.close();
-        out.close();
-        in.close();
+            socket.close();
+            in.close();
+            out.close();
+        }
+
+    public void receiveMessage(String messageAsJSON){
+
+            Message message = gson.fromJson(messageAsJSON, Message.class);
+            notify();
+
+        // TODO finish
+
+    }
+
+    public void sendMessage(Message message){
+        String messageAsJSON = gson.toJson(message);
+        out.println(messageAsJSON);
+
+
+
+        //TODO finish
 
     }
 
 
+    @Override
+    public void addListener(PropertyChangeListener listener) {
+        propertyChangeSupport.addPropertyChangeListener(listener);
 
+    }
 
+    @Override
+    public void removeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.removePropertyChangeListener(listener);
+    }
 }

@@ -1,4 +1,6 @@
 package model;
 
-public interface Model {
+import utility.observer.UnnamedPropertyChangeSubject;
+
+public interface Model  extends UnnamedPropertyChangeSubject {
 }
