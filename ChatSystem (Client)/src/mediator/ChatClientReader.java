@@ -1,4 +1,23 @@
 package mediator;
 
-public class ChatClientReader {
+public class ChatClientReader implements Runnable{
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @Override
+    public void run() {
+
+    }
 }
