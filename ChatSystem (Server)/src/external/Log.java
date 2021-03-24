@@ -1,4 +1,4 @@
-package external.log;
+package external;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -9,7 +9,7 @@ public class Log
 
   private ArrayList<LogLine> lines;
   private static Log log;
-  private static Object lock = new Object();
+  private static final Object lock = new Object();
 
   private Log(){
     this.lines = new ArrayList<>();
@@ -67,6 +67,7 @@ public class Log
     {
       try
       {
+        assert out != null;
         out.close();
       }
       catch (Exception e)

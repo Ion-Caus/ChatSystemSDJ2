@@ -1,15 +1,16 @@
 package view;
 
-public enum View
-{
-  CHATLOG("ChatLogView.fxml");
+public enum View {
+    CHATLOG("ChatLogView.fxml");
 
-  private String fxmlFile;
+    private String fxmlFile;
 
-  private View(String fxmlFile) {this.fxmlFile = fxmlFile;}
+    View(String fxmlFile) {
+        this.fxmlFile = fxmlFile;
+    }
 
-  public String getFxmlFile() {
-    return fxmlFile;
-  }
+    public String getFxmlFile() {
+        return fxmlFile;
+    }
 
 }
