@@ -4,13 +4,12 @@ import javafx.scene.layout.Region;
 
 public abstract class ViewCreator
 {
-
   public ViewCreator()
   {
 
   }
 
-  public ViewController getViewController()
+  public ViewController getViewController(ViewController.View id)
   {
 
   }

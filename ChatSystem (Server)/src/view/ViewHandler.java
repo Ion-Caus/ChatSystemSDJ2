@@ -23,7 +23,7 @@ public class ViewHandler extends ViewCreator
     openView();
   }
 
-  public void openView(View id)
+  public void openView(ViewController.View id)
   {
 
   }
