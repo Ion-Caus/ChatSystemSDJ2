@@ -6,8 +6,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 import viewmodel.ChatLogViewModel;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class ChatLogViewController extends ViewController
 {
