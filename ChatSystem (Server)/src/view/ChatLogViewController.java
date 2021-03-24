@@ -6,9 +6,9 @@ import java.util.Map;
 public class ChatLogViewController extends ViewController
 {
 
-  private ChatLogViewController(View key)
+  private ChatLogViewController()
   {
-    super(key);
+
   }
 
   @Override protected void init() {
