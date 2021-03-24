@@ -14,7 +14,7 @@
 
 <AnchorPane prefHeight="456.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LogViewController">
    <children>
-      <ImageView fitHeight="456.0" fitWidth="710.0">
+      <ImageView fitHeight="456.0" fitWidth="710.0" style="-fx-opacity: 0.8;">
          <image>
             <Image url="@12.jpg" />
          </image>
@@ -36,12 +36,16 @@
                   <Insets bottom="20.0" top="20.0" />
                </padding>
               </HBox>
-              <TextField fx:id="inputField" onAction="#onEnter" prefHeight="41.0" prefWidth="600.0">
-                  <font>
-                      <Font size="14.0" />
-                  </font>
-              </TextField>
-            <HBox alignment="CENTER" prefHeight="45.0" prefWidth="600.0">
+            <HBox alignment="CENTER" prefHeight="42.0" prefWidth="710.0">
+               <children>
+                    <TextField fx:id="inputField" onAction="#onEnter" prefHeight="42.0" prefWidth="670.0" style="-fx-background-radius: 25;">
+                        <font>
+                            <Font size="14.0" />
+                        </font>
+                    </TextField>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="57.0" prefWidth="710.0">
                <children>
                   <Button mnemonicParsing="false" style="-fx-background-radius: 25;" text="Broadcast">
                      <font>
@@ -50,7 +54,11 @@
                   </Button>
                </children>
             </HBox>
-              <ListView fx:id="logList" editable="false" prefHeight="251.0" prefWidth="710.0" />
+            <HBox alignment="CENTER" prefHeight="246.0" prefWidth="710.0">
+               <children>
+                    <ListView fx:id="logList" editable="false" prefHeight="247.0" prefWidth="670.0" style="-fx-background-radius: 25;" />
+               </children>
+            </HBox>
           </children>
       </VBox>
    </children>
