@@ -1,10 +1,12 @@
 package viewmodel;
 
+import external.Log;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import mediator.Message;
 import model.Model;
 
 import java.beans.PropertyChangeEvent;
@@ -37,7 +39,10 @@ public class ChatLogViewModel implements PropertyChangeListener
 
   public void setMessage() {
     if (!message.get().isEmpty()) {
-      model.addMessage(message.get(), "Server"); //TODO get somehow the username
+
+      model.addMessage(
+              new Message( "Server", message.get())
+      );
     }
   }
 
@@ -45,8 +50,8 @@ public class ChatLogViewModel implements PropertyChangeListener
   {
     Platform.runLater(
             () -> {
-              String message = evt.getOldValue() + ": " + evt.getNewValue();
-              logs.add(0, message);
+              Message message =  (Message)evt.getNewValue();
+              logs.add(message.toString());
             }
     );
   }

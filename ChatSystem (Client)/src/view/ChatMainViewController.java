@@ -34,7 +34,6 @@ public class ChatMainViewController extends ViewController
 
     this.loggedInAsLabel.textProperty().bind(viewModel.getLoggedInAsProperty());
     this.errorLabel.textProperty().bind(viewModel.getErrorProperty());
-
   }
 
   @Override public void reset() {

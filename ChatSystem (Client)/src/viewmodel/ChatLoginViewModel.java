@@ -27,7 +27,6 @@ public class ChatLoginViewModel {
     public boolean login() {
         try {
             model.login(username.get());
-            System.out.println("logged in as: " + username.get());
             return true;
         } catch (Exception e) {
             error.set(e.getLocalizedMessage());

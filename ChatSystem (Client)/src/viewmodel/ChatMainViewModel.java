@@ -5,6 +5,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import mediator.Message;
+import mediator.MessagePackage;
 import model.Model;
 
 import java.beans.PropertyChangeEvent;
@@ -57,15 +59,29 @@ public class ChatMainViewModel implements PropertyChangeListener {
     }
 
     public void sendMessage() {
-        model.sendMessage(message.get());
+        if (!message.get().isEmpty()) {
+            model.sendMessage(message.get());
+        }
+    }
+
+    private void addMessageToChat(Message message) {
+        chatList.add(message.getUsername() + ": " + message.getMessage());
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        Platform.runLater(() -> {
-            switch (evt.getPropertyName()) {
-
-            }
-        });
+        MessagePackage messagePackage = (MessagePackage)evt.getNewValue();
+        if (messagePackage != null) {
+            Platform.runLater(() -> {
+                switch (evt.getPropertyName()) {
+                    case "Message":
+                        addMessageToChat(messagePackage.getMessage()
+                        );
+                        break;
+                    case "User":
+                        break;
+                }
+            });
+        }
     }
 }

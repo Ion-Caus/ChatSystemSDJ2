@@ -42,26 +42,27 @@ public class ChatClientHandler implements Runnable, PropertyChangeListener {
             try {
                 String requestJson = in.readLine();
 
-                Message requestMessage = gson.fromJson(requestJson, Message.class);
-                Message replyMessage = null;
+                MessagePackage requestPackage = gson.fromJson(requestJson, MessagePackage.class);
+                MessagePackage replyPackage;
 
-                if (requestMessage.getType().equalsIgnoreCase("Login")) {
+                if (requestPackage.getType().equalsIgnoreCase("Login")) {
                     try {
-                        UserName userName =  new UserName(requestMessage.getUsername());
+                        UserName userName =  new UserName(requestPackage.getSource());
                         model.addUser(userName);
-                        replyMessage = new Message("Login", "Success", userName.getName());
+                        replyPackage = new MessagePackage("Login", userName.getName());
                     }
                     catch (Exception e) {
-                        replyMessage = new Message("Error", e.getMessage(), null);
+                        replyPackage = new MessagePackage("Error", e.getMessage());
                     }
                 }
                 else {
-                    String user = requestMessage.getUsername() + " (" + socket.getInetAddress().getHostAddress() + ")";
-                    model.addMessage(requestMessage.getMessage(), user);
-                    replyMessage = requestMessage;
+                    model.addMessage(
+                            requestPackage.getMessage().addUserIp(socket.getInetAddress().getHostAddress())
+                    );
+                    replyPackage = requestPackage;
                 }
 
-                out.println(gson.toJson(replyMessage));
+                out.println(gson.toJson(replyPackage));
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -89,8 +90,12 @@ public class ChatClientHandler implements Runnable, PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         Platform.runLater(() -> out.println(
-                gson.toJson(new Message("Message", (String)evt.getNewValue(), (String)evt.getOldValue()))
+                gson.toJson(
+                        new MessagePackage(
+                                "Message",
+                                ( (Message)evt.getNewValue()).removeUserIp()
+                        )
+                )
         ));
-
     }
 }

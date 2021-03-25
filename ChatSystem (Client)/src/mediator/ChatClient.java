@@ -18,9 +18,11 @@ public class ChatClient implements Model {
     private PrintWriter out;
     private Gson gson;
 
-    private Message receivedMessage;
+    private MessagePackage receivedMessage;
     private boolean waiting;
     private PropertyChangeSupport property;
+
+    private ChatClientReader chatClientReader;
 
     private String username;
 
@@ -32,37 +34,46 @@ public class ChatClient implements Model {
 
         property = new PropertyChangeSupport(this);
 
-        ChatClientReader chatClientReader = new ChatClientReader(this, in);
+        chatClientReader = new ChatClientReader(this, in);
         Thread chatClientReaderThread= new Thread(chatClientReader);
         chatClientReaderThread.setDaemon(true);
         chatClientReaderThread.start();
     }
 
-    public void disconnect() throws IOException {
+    public void disconnect() {
+        try {
+            chatClientReader.close();
             socket.close();
             in.close();
             out.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public synchronized Message waitingForReply() throws Exception {
+    public synchronized MessagePackage waitingForReply() throws Exception {
         while (receivedMessage == null){
             waiting = true;
             wait();
         }
         waiting = false;
 
-        Message returnMessage = receivedMessage;
+        MessagePackage returnMessage = receivedMessage;
         receivedMessage = null;
 
         if (returnMessage.getType().equalsIgnoreCase("Error")) {
-            throw new Exception(returnMessage.getMessage());
+            throw new Exception(returnMessage.getSource());
         }
         return returnMessage;
     }
 
 
     public synchronized void receive(String requestJson){
-        Message requestMessage = gson.fromJson(requestJson, Message.class);
+        MessagePackage requestMessage = gson.fromJson(requestJson, MessagePackage.class);
+        if (requestMessage == null) {
+            disconnect();
+        }
         if (waiting) {
             receivedMessage = requestMessage;
             notify();
@@ -75,7 +86,7 @@ public class ChatClient implements Model {
 
     @Override
     public void sendMessage(String message) {
-        Message requestMessage = new Message("Message", message, getUsername());
+        MessagePackage requestMessage = new MessagePackage("Message", new Message(username, message));
         out.println(gson.toJson(requestMessage));
         try {
             waitingForReply();
@@ -87,13 +98,13 @@ public class ChatClient implements Model {
 
     @Override
     public void login(String username) throws Exception {
-        Message requestMessage = new Message("Login", null, username);
+        MessagePackage requestMessage = new MessagePackage("Login", username);
 
         out.println(gson.toJson(requestMessage));
 
         try {
-            Message replyMessage = waitingForReply();
-            this.username = replyMessage.getUsername();
+            MessagePackage replyMessage = waitingForReply();
+            this.username = replyMessage.getSource();
         }
         catch (InterruptedException e) {
             e.printStackTrace();

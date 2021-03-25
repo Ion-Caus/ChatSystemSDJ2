@@ -3,12 +3,13 @@ package mediator;
 public class Message {
 
     private String username;
-    private String type;
     private String message;
 
-    public Message(String type, String message, String username) {
+    public Message(String username, String message) {
         this.username = username;
-        this.type = type;
+        if (message == null || message.isEmpty()) {
+            throw new IllegalArgumentException("Message cannot be empty");
+        }
         this.message = message;
     }
 
@@ -16,9 +17,6 @@ public class Message {
         return username;
     }
 
-    public String getType() {
-        return type;
-    }
 
     public String getMessage() {
         return message;
@@ -26,6 +24,6 @@ public class Message {
 
     @Override
     public String toString() {
-        return String.format("%s, %s :, %s \n", type, username, message);
+        return String.format("%s : %s ", username, message);
     }
 }

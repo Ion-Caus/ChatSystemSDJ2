@@ -19,6 +19,7 @@ public abstract class ViewController {
         this.root = root;
 
         init();
+        reset();
     }
 
     protected abstract void init();

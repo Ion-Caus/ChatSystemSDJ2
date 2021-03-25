@@ -1,5 +1,6 @@
 package model;
 
+import mediator.Message;
 import utility.observer.NamedPropertyChangeSubject;
 
 public interface Model extends NamedPropertyChangeSubject
@@ -14,5 +15,5 @@ public interface Model extends NamedPropertyChangeSubject
   void addUser(String userName)
       throws IllegalStateException, IllegalArgumentException;
   boolean contains(User user);
-  void addMessage(String message, String user);
+  void addMessage(Message message);
 }

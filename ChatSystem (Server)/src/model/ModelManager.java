@@ -17,10 +17,12 @@ public class ModelManager implements Model
     this.propertyChangeSupport = new PropertyChangeSupport(this);
   }
 
-  public synchronized void addMessage(String message, String user)
+
+  @Override
+  public synchronized void addMessage(Message message)
   {
-    Log.getLog().addLog(user + ": " + message);
-    propertyChangeSupport.firePropertyChange("Message", user, message);
+    Log.getLog().addLog(message.toString());
+    propertyChangeSupport.firePropertyChange("Message", null, message);
   }
 
   @Override public int getNumberOfUsers()
