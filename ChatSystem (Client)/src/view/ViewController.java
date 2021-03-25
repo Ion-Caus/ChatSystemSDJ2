@@ -26,11 +26,7 @@ public abstract class ViewController
 
   protected abstract void init();
 
-  public void reset()
-  {
-    // TODO
-  }
-
+  public abstract void reset();
   public Region getRoot()
   {
     return root;

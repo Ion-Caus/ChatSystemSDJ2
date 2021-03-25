@@ -16,9 +16,7 @@ public class ChatMainViewController extends ViewController
   @FXML private Label errorLabel;
   @FXML private ListView<String> userList;
 
-  private Region root;
   private ChatMainViewModel viewModel;
-  private ViewHandler viewHandler;
 
   public ChatMainViewController()
   {
@@ -28,12 +26,16 @@ public class ChatMainViewController extends ViewController
   @Override protected void init()
   {
     this.viewModel = getViewModelFactory().getMainChatViewModel();
-    this.messageList.setItems(viewModel.getMessageListProperty());
+    this.messageList.setItems(viewModel.getChatTextProperty());
     this.messageField.textProperty().bind(viewModel.getMessageProperty());
     this.loggedInAsLabel.textProperty().bindBidirectional(
         viewModel.getLoggedInAsProperty());
     this.errorLabel.textProperty().bind(viewModel.getErrorProperty());
     this.userList.setItems(viewModel.getListUserProperty());
+  }
+
+  @Override public void reset() {
+    viewModel.clear();
   }
 
   @FXML private void sendMessage()

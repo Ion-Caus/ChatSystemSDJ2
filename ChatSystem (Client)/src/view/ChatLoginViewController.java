@@ -1,5 +1,6 @@
 package view;
 
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -11,9 +12,7 @@ public class ChatLoginViewController extends ViewController
   @FXML private Label errorLabel;
   @FXML private TextField usernameField;
 
-  private Region root;
   private ChatLoginViewModel viewModel;
-  private ViewHandler viewHandler;
 
   public ChatLoginViewController()
   {
@@ -27,13 +26,19 @@ public class ChatLoginViewController extends ViewController
     this.usernameField.textProperty().bindBidirectional(viewModel.getUsernameProperty());
   }
 
-  @FXML private void loginPressed()
-  {
-    // TODO
+  @Override public void reset() {
+    viewModel.clear();
   }
 
-  @FXML private void onEnter()
+  @FXML private void loginPressed()
   {
-    loginPressed();
+    viewModel.login();
   }
+
+  @FXML private void onEnter(Event event)
+  {
+    if(event.getSource()==usernameField)
+      loginPressed();
+  }
+
 }

@@ -32,4 +32,16 @@ public class ModelManager implements Model
   {
     property.removePropertyChangeListener(nameProperty, listener);
   }
+
+  @Override public void sendMessage(String message) {
+
+  }
+
+  @Override public void login(String username) {
+
+  }
+
+  @Override public String getUsername() {
+    return null;
+  }
 }
