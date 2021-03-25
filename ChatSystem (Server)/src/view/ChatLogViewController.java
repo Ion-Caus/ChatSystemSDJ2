@@ -15,7 +15,6 @@ public class ChatLogViewController extends ViewController
   private Region root;
   private ChatLogViewModel viewModel;
   private ViewHandler viewHandler;
-  public View key;
 
   public ChatLogViewController()
   {

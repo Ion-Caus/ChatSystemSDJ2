@@ -14,7 +14,6 @@ public class ChatLoginViewController extends ViewController
   private Region root;
   private ChatLoginViewModel viewModel;
   private ViewHandler viewHandler;
-  public View key;
 
   public ChatLoginViewController()
   {

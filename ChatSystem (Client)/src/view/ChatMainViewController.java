@@ -19,7 +19,6 @@ public class ChatMainViewController extends ViewController
   private Region root;
   private ChatMainViewModel viewModel;
   private ViewHandler viewHandler;
-  public View key;
 
   public ChatMainViewController()
   {
