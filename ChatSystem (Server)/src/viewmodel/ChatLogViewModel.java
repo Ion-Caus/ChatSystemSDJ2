@@ -20,7 +20,7 @@ public class ChatLogViewModel implements PropertyChangeListener
     this.model = model;
     this.logs = FXCollections.observableArrayList();
     this.message = new SimpleStringProperty();
-    model.addListener("Log", this);
+    model.addListener("Message", this);
   }
 
   public ObservableList<String> getLogs() {
@@ -33,12 +33,17 @@ public class ChatLogViewModel implements PropertyChangeListener
 
   public void setMessage() {
     if (!message.get().isEmpty()) {
-      model.addMessage(message.get()); //potential model modifications needed
+      model.addMessage(message.get(), "Server"); //TODO get somehow the username
     }
   }
 
   @Override public void propertyChange(PropertyChangeEvent evt)
   {
-    Platform.runLater(() -> logs.add(0, (String)evt.getNewValue()));
+    Platform.runLater(
+            () -> {
+              String message = evt.getOldValue() + ": " + evt.getNewValue();
+              logs.add(0, message);
+            }
+    );
   }
 }

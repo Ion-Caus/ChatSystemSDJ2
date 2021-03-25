@@ -10,7 +10,7 @@ public class MyApplication extends Application
 {
   private ChatServer chatServer;
 
-  @Override public void start(Stage stage) throws Exception
+  @Override public void start(Stage stage)
   {
     Model model = new ModelManager();
     ViewModelFactory viewModelFactory = new ViewModelFactory(model);

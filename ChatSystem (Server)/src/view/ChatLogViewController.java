@@ -1,5 +1,6 @@
 package view;
 
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -24,18 +25,20 @@ public class ChatLogViewController extends ViewController
   }
 
   public void reset() {
+    inputField.setText("");
   }
 
 
   @FXML
-  private void onEnter() {
-    viewModel.setMessage();
-    inputField.setText("");
+  private void onEnter(Event event) {
+    if (event.getSource() == inputField) {
+      broadcastMessage();
+    }
   }
 
   public void broadcastMessage()
   {
     viewModel.setMessage();
-    inputField.setText("");
+    reset();
   }
 }

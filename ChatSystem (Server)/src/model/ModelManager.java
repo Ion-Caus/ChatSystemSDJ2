@@ -1,6 +1,7 @@
 package model;
 
 import external.Log;
+import mediator.Message;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -16,10 +17,10 @@ public class ModelManager implements Model
     this.propertyChangeSupport = new PropertyChangeSupport(this);
   }
 
-   public synchronized void addMessage(String message)
+  public synchronized void addMessage(String message, String user)
   {
-    Log.getLog().addLog(message);
-    propertyChangeSupport.firePropertyChange("Message", null, message);
+    Log.getLog().addLog(user + ": " + message);
+    propertyChangeSupport.firePropertyChange("Message", user, message);
   }
 
   @Override public int getNumberOfUsers()
@@ -41,7 +42,7 @@ public class ModelManager implements Model
       throws IllegalStateException, IllegalArgumentException
   {
     users.addUser(user);
-    System.out.println("ADDED: " + user);
+    Log.getLog().addLog("ADDED: " + user);
   }
 
   @Override public void addUser(String userName)
@@ -54,7 +55,7 @@ public class ModelManager implements Model
       throws IllegalStateException, IllegalArgumentException
   {
     users.addUser(userName);
-    System.out.println("ADDED: " + new User(userName));
+    Log.getLog().addLog("ADDED: " + new User(userName));
   }
 
   @Override public boolean contains(User user)
