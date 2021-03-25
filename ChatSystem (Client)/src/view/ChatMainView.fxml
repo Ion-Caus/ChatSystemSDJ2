@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -13,7 +12,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
 
 <AnchorPane prefHeight="600.0" prefWidth="840.0" userData="Client - Chat" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ChatMainViewController">
    <children>
@@ -31,7 +29,7 @@
             </Label>
             <HBox alignment="BASELINE_RIGHT" prefHeight="54.0" prefWidth="663.0">
                <children>
-                  <Label prefHeight="42.0" prefWidth="314.0" fx:id="loggedInAsLabel" text="Logged in as:">
+                  <Label fx:id="loggedInAsLabel" prefHeight="42.0" prefWidth="314.0" text="Logged in as:">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -45,19 +43,15 @@
               <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="222.0" prefWidth="491.0">
                      <children>
-                        <HBox alignment="CENTER" layoutX="-1.0" prefHeight="313.0" prefWidth="598.0">
+                        <HBox alignment="CENTER" layoutX="-1.0" layoutY="6.0" prefHeight="308.0" prefWidth="598.0">
                            <children>
-                              <TextArea editable="false"  fx:id="chatTextArea" prefHeight="274.0" prefWidth="560.0">
-                                 <HBox.margin>
-                                    <Insets bottom="20.0" top="20.0" />
-                                 </HBox.margin>
-                              </TextArea>
+                              <ListView fx:id="messageList" prefHeight="310.0" prefWidth="562.0" style="-fx-background-radius: 25;" />
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" layoutX="-1.0" layoutY="302.0" prefHeight="78.0" prefWidth="598.0" spacing="10.0">
+                        <HBox alignment="CENTER" layoutX="-1.0" layoutY="302.0" prefHeight="96.0" prefWidth="598.0" spacing="10.0">
                            <children>
-                              <TextField prefHeight="34.0" prefWidth="480.0" fx:id="messageField" onAction="#onEnter" style="-fx-background-radius: 25;" />
-                              <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="75.0"  onAction="#sendMessage" style="-fx-background-radius: 25;" text="Send" />
+                              <TextField fx:id="messageField" onAction="#onEnter" prefHeight="34.0" prefWidth="480.0" style="-fx-background-radius: 25;" />
+                              <Button mnemonicParsing="false" onAction="#sendMessage" prefHeight="39.0" prefWidth="75.0" style="-fx-background-radius: 25;" text="Send" />
                            </children>
                            <padding>
                               <Insets bottom="10.0" />
@@ -67,12 +61,12 @@
                   </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                      <children>
-                        <ListView layoutX="18.0" prefHeight="382.0" prefWidth="190.0" fx:id="userList"/>
+                        <ListView fx:id="userList" layoutX="17.0" layoutY="4.0" prefHeight="369.0" prefWidth="190.0" style="-fx-background-radius: 25;" />
                      </children>
                   </AnchorPane>
               </items>
             </SplitPane>
-            <Label text="Error label" fx:id="errorLabel" textFill="RED">
+            <Label fx:id="errorLabel" text="Error label" textFill="RED">
                <font>
                   <Font size="18.0" />
                </font>

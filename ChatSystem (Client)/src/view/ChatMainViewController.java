@@ -10,7 +10,7 @@ import viewmodel.ChatMainViewModel;
 
 public class ChatMainViewController extends ViewController
 {
-  @FXML private TextArea chatTextArea;
+  @FXML private ListView<String> messageList;
   @FXML private TextField messageField;
   @FXML private Label loggedInAsLabel;
   @FXML private Label errorLabel;
@@ -28,7 +28,7 @@ public class ChatMainViewController extends ViewController
   @Override protected void init()
   {
     this.viewModel = getViewModelFactory().getMainChatViewModel();
-    this.chatTextArea.textProperty().bindBidirectional(viewModel.getChatTextProperty());
+    this.messageList.setItems(viewModel.getMessageListProperty());
     this.messageField.textProperty().bind(viewModel.getMessageProperty());
     this.loggedInAsLabel.textProperty().bindBidirectional(
         viewModel.getLoggedInAsProperty());
