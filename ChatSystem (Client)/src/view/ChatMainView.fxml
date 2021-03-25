@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane prefHeight="561.0" prefWidth="830.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ChatMainViewController">
+<AnchorPane prefHeight="560.0" prefWidth="830.0" userData="Client - Chat" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ChatMainViewController">
    <children>
       <ImageView fitHeight="562.0" fitWidth="830.0" style="-fx-opacity: 0.8;">
          <image>

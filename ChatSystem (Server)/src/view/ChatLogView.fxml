@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="456.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ChatLogViewController">
+<AnchorPane prefHeight="490.0" userData="Server - Chat log" prefWidth="710.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ChatLogViewController">
    <children>
       <ImageView fitHeight="456.0" fitWidth="710.0" style="-fx-opacity: 0.8;">
          <image>

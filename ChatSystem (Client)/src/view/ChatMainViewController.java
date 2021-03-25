@@ -22,22 +22,18 @@ public class ChatMainViewController extends ViewController
 
   public ChatMainViewController()
   {
-
+    // FXML loader
   }
 
   @Override protected void init()
   {
+    this.viewModel = getViewModelFactory().getMainChatViewModel();
     this.chatTextArea.textProperty().bindBidirectional(viewModel.getChatTextProperty());
     this.messageField.textProperty().bind(viewModel.getMessageProperty());
     this.loggedInAsLabel.textProperty().bindBidirectional(
         viewModel.getLoggedInAsProperty());
     this.errorLabel.textProperty().bind(viewModel.getErrorProperty());
     this.userList.setItems(viewModel.getListUserProperty());
-  }
-
-  public Region getRoot()
-  {
-    return root;
   }
 
   @FXML private void sendMessage()

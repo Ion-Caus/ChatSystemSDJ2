@@ -17,18 +17,14 @@ public class ChatLoginViewController extends ViewController
 
   public ChatLoginViewController()
   {
-
+    // FXML loader
   }
 
   @Override protected void init()
   {
+    this.viewModel = getViewModelFactory().getLoginChatViewModel();
     this.errorLabel.textProperty().bind(viewModel.getErrorProperty());
     this.usernameField.textProperty().bindBidirectional(viewModel.getUsernameProperty());
-  }
-
-  public Region getRoot()
-  {
-    return root;
   }
 
   @FXML private void loginPressed()
