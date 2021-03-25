@@ -16,9 +16,7 @@ public class ChatMainViewController extends ViewController
   @FXML private Label errorLabel;
   @FXML private ListView<String> userList;
 
-  private Region root;
   private ChatMainViewModel viewModel;
-  private ViewHandler viewHandler;
 
   public ChatMainViewController()
   {

@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class ChatClient implements Model {
     private Socket socket;
@@ -17,10 +18,11 @@ public class ChatClient implements Model {
     private PrintWriter out;
     private Gson gson;
 
-    private Message message;
-    private Model model;
+    private ArrayList<Message> receivedMessages;
+    private boolean waiting;
     private PropertyChangeSupport property;
 
+    private Model model;
 
     public ChatClient(Model model, String host, int port) throws IOException {
         this.socket = new Socket(host, port);
@@ -29,9 +31,9 @@ public class ChatClient implements Model {
         this.gson = new Gson();
         this.model = model;
 
-        property= new PropertyChangeSupport(this);
+        property = new PropertyChangeSupport(this);
 
-        ChatClientReader chatClientReader = new ChatClientReader(socket);
+        ChatClientReader chatClientReader = new ChatClientReader(this, in);
         Thread chatClientReaderThread= new Thread(chatClientReader);
         chatClientReaderThread.setDaemon(true);
         chatClientReaderThread.start();
@@ -41,14 +43,34 @@ public class ChatClient implements Model {
             socket.close();
             in.close();
             out.close();
+    }
+
+    public synchronized Message waitingForReply() throws Exception {
+        while (receivedMessages.isEmpty()){
+            waiting = true;
+            wait();
         }
+        waiting = false;
 
-    public void receiveMessage(String messageAsJSON){
+        Message returnMessage = receivedMessages.get(0);
+        receivedMessages.remove(returnMessage);
 
-            Message message = gson.fromJson(messageAsJSON, Message.class);
+        if (returnMessage.getType().equalsIgnoreCase("Error")) {
+            throw new Exception(returnMessage.getMessage());
+        }
+        return returnMessage;
+    }
+
+
+    public synchronized void receive(String requestJson){
+        Message requestMessage = gson.fromJson(requestJson, Message.class);
+        if (waiting) {
+            receivedMessages.add(requestMessage);
             notify();
-
-        // TODO finish
+        }
+        else {
+            property.firePropertyChange(requestMessage.getType(), requestMessage.getUsername(), requestMessage.getMessage());
+        }
 
     }
 
