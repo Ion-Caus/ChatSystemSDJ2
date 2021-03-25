@@ -35,6 +35,7 @@ public class ViewHandler extends ViewCreator {
         primaryStage.setScene(currentScene);
         primaryStage.setWidth(root.getPrefWidth());
         primaryStage.setHeight(root.getPrefHeight());
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
