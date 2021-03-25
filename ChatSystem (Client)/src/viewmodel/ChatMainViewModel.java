@@ -10,56 +10,62 @@ import model.Model;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class ChatMainViewModel implements PropertyChangeListener
-{
-  private Model model;
-  private StringProperty message;
-  private StringProperty loggedInAs;
-  private StringProperty error;
-  private ObservableList<String> listUser, chatText;
+public class ChatMainViewModel implements PropertyChangeListener {
+    private Model model;
+    private StringProperty message;
+    private StringProperty loggedInAs;
+    private StringProperty error;
+    private ObservableList<String> listUser, chatList;
 
-  public ChatMainViewModel(Model model)
-  {
-    this.model = model;
-    this.chatText = FXCollections.observableArrayList();
-    this.message = new SimpleStringProperty();
-    this.loggedInAs = new SimpleStringProperty();
-    this.error = new SimpleStringProperty();
-    this.listUser = FXCollections.observableArrayList();
-    model.addListener("Message",this);
-  }
+    public ChatMainViewModel(Model model) {
+        this.model = model;
 
-  public ObservableList<String> getChatTextProperty()
-  {
-    return chatText;
-  }
+        this.chatList = FXCollections.observableArrayList();
+        this.message = new SimpleStringProperty();
+        this.loggedInAs = new SimpleStringProperty();
+        this.error = new SimpleStringProperty();
+        this.listUser = FXCollections.observableArrayList();
+        model.addListener("Message", this);
+        model.addListener("User", this);
+    }
 
-  public StringProperty getMessageProperty()
-  {
-    return message;
-  }
+    public ObservableList<String> getChatListProperty() {
+        return chatList;
+    }
 
-  public StringProperty getLoggedInAsProperty()
-  {
-    return loggedInAs;
-  }
+    public StringProperty getMessageProperty() {
+        return message;
+    }
 
-  public StringProperty getErrorProperty()
-  {
-    return error;
-  }
+    public StringProperty getLoggedInAsProperty() {
+        return loggedInAs;
+    }
 
-  public ObservableList<String> getListUserProperty()
-  {
-    return listUser;
-  }
+    public StringProperty getErrorProperty() {
+        return error;
+    }
 
-  public void clear(){
-    error.set("");
-    message.set("");
-  }
+    public ObservableList<String> getListUserProperty() {
+        return listUser;
+    }
 
-  @Override public void propertyChange(PropertyChangeEvent evt) {
-    Platform.runLater(()->);
-  }
+    public void clear() {
+        loggedInAs.set("Logged in as: " + model.getUsername());
+        error.set("");
+        message.set("");
+
+    }
+
+    public void sendMessage() {
+        model.sendMessage(message.get());
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        Platform.runLater(() -> {
+            switch (evt.getPropertyName()) {
+
+            }
+        });
+    }
 }

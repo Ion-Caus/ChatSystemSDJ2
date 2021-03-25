@@ -26,12 +26,15 @@ public class ChatMainViewController extends ViewController
   @Override protected void init()
   {
     this.viewModel = getViewModelFactory().getMainChatViewModel();
-    this.messageList.setItems(viewModel.getChatTextProperty());
-    this.messageField.textProperty().bind(viewModel.getMessageProperty());
-    this.loggedInAsLabel.textProperty().bindBidirectional(
-        viewModel.getLoggedInAsProperty());
-    this.errorLabel.textProperty().bind(viewModel.getErrorProperty());
+
+    this.messageList.setItems(viewModel.getChatListProperty());
     this.userList.setItems(viewModel.getListUserProperty());
+
+    this.messageField.textProperty().bindBidirectional(viewModel.getMessageProperty());
+
+    this.loggedInAsLabel.textProperty().bind(viewModel.getLoggedInAsProperty());
+    this.errorLabel.textProperty().bind(viewModel.getErrorProperty());
+
   }
 
   @Override public void reset() {
@@ -40,7 +43,8 @@ public class ChatMainViewController extends ViewController
 
   @FXML private void sendMessage()
   {
-    // TODO
+    viewModel.sendMessage();
+    reset();
   }
 
   @FXML private void onEnter()

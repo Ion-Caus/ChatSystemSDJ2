@@ -1,47 +1,63 @@
 package model;
 
+import javafx.application.Platform;
 import mediator.ChatClient;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 
-public class ModelManager implements Model
-{
-  public static final String HOST = "localhost";
-  public static final int PORT = 6789;
-  private PropertyChangeSupport property;
-  private ChatClient chatClient;
+public class ModelManager implements Model, PropertyChangeListener {
+    public static final String HOST = "localhost";
+    public static final int PORT = 6789;
 
-  public ModelManager() throws IOException
-  {
-    // TODO
-    property = new PropertyChangeSupport(this);
-    chatClient = new ChatClient(this, HOST, PORT);
-    //chatClient.addListener();
-  }
+    private PropertyChangeSupport property;
+    private ChatClient chatClient;
 
-  @Override public void addListener(String nameProperty,
-      PropertyChangeListener listener)
-  {
-    property.addPropertyChangeListener(nameProperty, listener);
-  }
+    public ModelManager() throws IOException {
+        property = new PropertyChangeSupport(this);
+        chatClient = new ChatClient( HOST, PORT);
+        chatClient.addListener("Login", this);
+        chatClient.addListener("Message", this);
+    }
 
-  @Override public void removeListener(String nameProperty,
-      PropertyChangeListener listener)
-  {
-    property.removePropertyChangeListener(nameProperty, listener);
-  }
+    @Override
+    public void sendMessage(String message) {
+        chatClient.sendMessage(message);
+    }
 
-  @Override public void sendMessage(String message) {
+    @Override
+    public void login(String username) throws Exception {
+        chatClient.login(username);
+    }
 
-  }
+    @Override
+    public String getUsername() {
+        return chatClient.getUsername();
+    }
 
-  @Override public void login(String username) {
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        Platform.runLater( () ->
+                property.firePropertyChange(
+                        evt.getPropertyName(),
+                        evt.getOldValue(),
+                        evt.getNewValue()
+                )
+        );
+    }
 
-  }
+    @Override
+    public void addListener(String nameProperty,
+                            PropertyChangeListener listener) {
+        property.addPropertyChangeListener(nameProperty, listener);
+    }
 
-  @Override public String getUsername() {
-    return null;
-  }
+    @Override
+    public void removeListener(String nameProperty,
+                               PropertyChangeListener listener) {
+        property.removePropertyChangeListener(nameProperty, listener);
+    }
+
 }

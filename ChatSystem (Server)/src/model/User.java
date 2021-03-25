@@ -17,6 +17,12 @@ public class User
 
   public String toString()
   {
+    return userName.getName();
+  }
+
+
+  public String toStringFull()
+  {
     return userName + " " + registrationDate;
   }
 

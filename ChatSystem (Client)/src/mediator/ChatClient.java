@@ -18,18 +18,17 @@ public class ChatClient implements Model {
     private PrintWriter out;
     private Gson gson;
 
-    private ArrayList<Message> receivedMessages;
+    private Message receivedMessage;
     private boolean waiting;
     private PropertyChangeSupport property;
 
-    private Model model;
+    private String username;
 
-    public ChatClient(Model model, String host, int port) throws IOException {
+    public ChatClient(String host, int port) throws IOException {
         this.socket = new Socket(host, port);
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.out = new PrintWriter(socket.getOutputStream(), true);
         this.gson = new Gson();
-        this.model = model;
 
         property = new PropertyChangeSupport(this);
 
@@ -46,14 +45,14 @@ public class ChatClient implements Model {
     }
 
     public synchronized Message waitingForReply() throws Exception {
-        while (receivedMessages.isEmpty()){
+        while (receivedMessage == null){
             waiting = true;
             wait();
         }
         waiting = false;
 
-        Message returnMessage = receivedMessages.get(0);
-        receivedMessages.remove(returnMessage);
+        Message returnMessage = receivedMessage;
+        receivedMessage = null;
 
         if (returnMessage.getType().equalsIgnoreCase("Error")) {
             throw new Exception(returnMessage.getMessage());
@@ -65,25 +64,46 @@ public class ChatClient implements Model {
     public synchronized void receive(String requestJson){
         Message requestMessage = gson.fromJson(requestJson, Message.class);
         if (waiting) {
-            receivedMessages.add(requestMessage);
+            receivedMessage = requestMessage;
             notify();
         }
         else {
-            property.firePropertyChange(requestMessage.getType(), requestMessage.getUsername(), requestMessage.getMessage());
+            property.firePropertyChange("Message", null, requestMessage);
         }
 
     }
 
-    public void sendMessage(Message message){
-        String messageAsJSON = gson.toJson(message);
-        out.println(messageAsJSON);
-
-
-
-        //TODO finish
-
+    @Override
+    public void sendMessage(String message) {
+        Message requestMessage = new Message("Message", message, getUsername());
+        out.println(gson.toJson(requestMessage));
+        try {
+            waitingForReply();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
+    @Override
+    public void login(String username) throws Exception {
+        Message requestMessage = new Message("Login", null, username);
+
+        out.println(gson.toJson(requestMessage));
+
+        try {
+            Message replyMessage = waitingForReply();
+            this.username = replyMessage.getUsername();
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
 
     @Override
     public void addListener(String nameProperty, PropertyChangeListener listener) {

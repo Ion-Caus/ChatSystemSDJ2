@@ -58,6 +58,7 @@ public class ChatClientHandler implements Runnable, PropertyChangeListener {
                 else {
                     String user = requestMessage.getUsername() + " (" + socket.getInetAddress().getHostAddress() + ")";
                     model.addMessage(requestMessage.getMessage(), user);
+                    replyMessage = requestMessage;
                 }
 
                 out.println(gson.toJson(replyMessage));

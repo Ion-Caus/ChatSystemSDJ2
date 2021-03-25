@@ -27,6 +27,10 @@ public class ChatLogViewModel implements PropertyChangeListener
     return logs;
   }
 
+  public void clear() {
+    message.set("");
+  }
+
   public StringProperty getMessageProperty() {
     return message;
   }
