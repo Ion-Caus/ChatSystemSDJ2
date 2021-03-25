@@ -22,6 +22,7 @@ public abstract class ViewCreator {
         else {
             controller.reset();
         }
+        System.out.println("Controller- getVC: " + controller);
         return controller;
     }
 
@@ -33,7 +34,9 @@ public abstract class ViewCreator {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource(fxmlFile));
             Region root = loader.load();
+            System.out.println("Root-ViewCreator"+ root);
             viewController = loader.getController();
+            System.out.println("Controller-ViewCreator"+ root);
             initViewController(viewController, root);
         }
         catch (Exception e) {
