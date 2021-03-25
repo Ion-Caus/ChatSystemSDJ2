@@ -9,9 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.lang.reflect.Type;
 import java.net.Socket;
-import java.util.function.ToDoubleBiFunction;
 
 public class ChatClient implements Model {
     private Socket socket;
@@ -19,29 +17,25 @@ public class ChatClient implements Model {
     private PrintWriter out;
     private Gson gson;
 
-
-    private PropertyChangeSupport propertyChangeSupport;
     private Message message;
     private Model model;
+    private PropertyChangeSupport property;
 
-    public ChatClient(Model model, String host, int port, Message message) throws IOException {
+
+    public ChatClient(Model model, String host, int port) throws IOException {
         this.socket = new Socket(host, port);
-        this.model = model;
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.out = new PrintWriter(socket.getOutputStream(), true);
-        this.message=message;
+        this.gson = new Gson();
+        this.model = model;
 
-        propertyChangeSupport= new PropertyChangeSupport(this);
+        property= new PropertyChangeSupport(this);
+
         ChatClientReader chatClientReader = new ChatClientReader(socket);
-
-
         Thread chatClientReaderThread= new Thread(chatClientReader);
         chatClientReaderThread.setDaemon(true);
         chatClientReaderThread.start();
-
-
     }
-
 
     public void disconnect() throws IOException {
             socket.close();
@@ -71,12 +65,12 @@ public class ChatClient implements Model {
 
     @Override
     public void addListener(String nameProperty, PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(nameProperty, listener);
+        property.addPropertyChangeListener(nameProperty, listener);
 
     }
 
     @Override
     public void removeListener(String nameProperty, PropertyChangeListener listener) {
-        propertyChangeSupport.removePropertyChangeListener(nameProperty, listener);
+        property.removePropertyChangeListener(nameProperty, listener);
     }
 }
