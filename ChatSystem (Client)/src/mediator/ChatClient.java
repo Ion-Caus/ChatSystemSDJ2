@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Map;
 
 public class ChatClient implements Model {
     private Socket socket;
@@ -31,22 +32,21 @@ public class ChatClient implements Model {
 
         property= new PropertyChangeSupport(this);
 
-        ChatClientReader chatClientReader = new ChatClientReader(socket);
+        ChatClientReader chatClientReader = new ChatClientReader(in,this);
         Thread chatClientReaderThread= new Thread(chatClientReader);
         chatClientReaderThread.setDaemon(true);
         chatClientReaderThread.start();
     }
 
     public void disconnect() throws IOException {
-            socket.close();
-            in.close();
-            out.close();
+        socket.close();
+        in.close();
+        out.close();
         }
 
-    public void receiveMessage(String messageAsJSON){
+    public void receiveMessage(String replyJson){
 
-            Message message = gson.fromJson(messageAsJSON, Message.class);
-            notify();
+        //if (gson.fromJson(replyJson, Map.class).get("type").equals("Message"))
 
         // TODO finish
 
