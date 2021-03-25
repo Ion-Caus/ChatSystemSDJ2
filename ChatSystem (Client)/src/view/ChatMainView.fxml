@@ -13,65 +13,66 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="840.0" userData="Client - Chat" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ChatMainViewController">
+<AnchorPane prefHeight="600.0" prefWidth="850.0" userData="Client - Chat" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ChatMainViewController">
    <children>
-      <ImageView fitHeight="562.0" fitWidth="830.0" style="-fx-opacity: 0.8;">
+      <ImageView fitHeight="600.0" fitWidth="840.0" style="-fx-opacity: 0.8;">
          <image>
             <Image url="@12.jpg" />
          </image>
       </ImageView>
-      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="562.0" prefWidth="830.0">
+      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="841.0">
          <children>
-            <Label alignment="CENTER" prefHeight="64.0" prefWidth="843.0" text="Chat" underline="true">
+            <Label alignment="CENTER" prefHeight="63.0" prefWidth="849.0" text="Chat" underline="true">
                <font>
                   <Font name="Comic Sans MS" size="30.0" />
                </font>
             </Label>
-            <HBox alignment="BASELINE_RIGHT" prefHeight="54.0" prefWidth="663.0">
+            <HBox alignment="BASELINE_RIGHT" prefHeight="63.0" prefWidth="842.0">
                <children>
-                  <Label fx:id="loggedInAsLabel" prefHeight="42.0" prefWidth="314.0" text="Logged in as:">
+                  <Label fx:id="loggedInAsLabel" alignment="BASELINE_LEFT" prefHeight="63.0" prefWidth="345.0" text="Logged in as:" textFill="#009f03">
                      <font>
-                        <Font size="18.0" />
+                        <Font size="20.0" />
                      </font>
                   </Label>
                </children>
-               <padding>
-                  <Insets right="20.0" />
-               </padding>
             </HBox>
-            <SplitPane dividerPositions="0.7249283667621776" prefHeight="381.0" prefWidth="830.0">
+            <SplitPane dividerPositions="0.7249283667621776" prefHeight="380.0" prefWidth="842.0">
               <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="222.0" prefWidth="491.0">
                      <children>
-                        <HBox alignment="CENTER" layoutX="-1.0" layoutY="6.0" prefHeight="308.0" prefWidth="598.0">
+                        <HBox alignment="CENTER" layoutX="-1.0" layoutY="10.0" prefHeight="310.0" prefWidth="606.0">
                            <children>
-                              <ListView fx:id="messageList" prefHeight="310.0" prefWidth="562.0" style="-fx-background-radius: 25;" />
+                              <ListView fx:id="messageList" prefHeight="298.0" prefWidth="560.0" />
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" layoutX="-1.0" layoutY="302.0" prefHeight="96.0" prefWidth="598.0" spacing="10.0">
+                        <HBox alignment="CENTER" layoutX="-1.0" layoutY="316.0" prefHeight="63.0" prefWidth="606.0" spacing="10.0">
                            <children>
-                              <TextField fx:id="messageField" onAction="#onEnter" prefHeight="34.0" prefWidth="480.0" style="-fx-background-radius: 25;" />
-                              <Button mnemonicParsing="false" onAction="#sendMessage" prefHeight="39.0" prefWidth="75.0" style="-fx-background-radius: 25;" text="Send" />
+                              <TextField fx:id="messageField" onAction="#onEnter" prefHeight="40.0" prefWidth="486.0" style="-fx-background-radius: 25;" />
+                              <Button mnemonicParsing="false" onAction="#sendMessage" prefHeight="40.0" prefWidth="70.0" style="-fx-background-radius: 25;" text="Send">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font></Button>
                            </children>
-                           <padding>
-                              <Insets bottom="10.0" />
-                           </padding>
                         </HBox>
                      </children>
                   </AnchorPane>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="0.0">
                      <children>
-                        <ListView fx:id="userList" layoutX="17.0" layoutY="4.0" prefHeight="369.0" prefWidth="190.0" style="-fx-background-radius: 25;" />
+                        <HBox alignment="CENTER" layoutY="10.0" prefHeight="358.0" prefWidth="228.0">
+                           <children>
+                              <ListView fx:id="userList" prefHeight="360.0" prefWidth="186.0" />
+                           </children>
+                        </HBox>
                      </children>
                   </AnchorPane>
               </items>
             </SplitPane>
-            <Label fx:id="errorLabel" text="Error label" textFill="RED">
+            <Label fx:id="errorLabel" prefHeight="94.0" prefWidth="825.0" text="Error label" textFill="RED">
                <font>
                   <Font size="18.0" />
                </font>
                <VBox.margin>
-                  <Insets left="30.0" top="10.0" />
+                  <Insets left="30.0" />
                </VBox.margin>
             </Label>
          </children>

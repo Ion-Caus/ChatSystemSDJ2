@@ -12,16 +12,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="350.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" userData="Client - Login" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ChatLoginViewController">
+<AnchorPane prefHeight="340.0" prefWidth="590.0" userData="Client - Login" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ChatLoginViewController">
    <children>
-      <ImageView fitHeight="314.0" fitWidth="600.0" style="-fx-opacity: 0.8;">
+      <ImageView fitHeight="350.0" fitWidth="600.0" style="-fx-opacity: 0.8;">
          <image>
             <Image url="@12.jpg" />
          </image>
       </ImageView>
-      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="313.0" prefWidth="600.0">
+      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="600.0">
          <children>
-            <Label alignment="CENTER" prefHeight="100.0" prefWidth="600.0" text="Chat Login" underline="true">
+            <Label alignment="CENTER" prefHeight="100.0" prefWidth="646.0" text="Chat Login" underline="true">
                <font>
                   <Font name="Comic Sans MS" size="30.0" />
                </font>
@@ -44,11 +44,8 @@
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="41.0" prefWidth="600.0">
-               <padding>
-                  <Insets left="130.0" />
-               </padding>
                <children>
-                  <Label prefHeight="27.0" prefWidth="246.0" fx:id="errorLabel" text="Error label" textFill="#fa0606">
+                  <Label fx:id="errorLabel" prefHeight="27.0" prefWidth="385.0" text="Error label" textFill="#fa0606">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -57,7 +54,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="55.0" prefWidth="600.0">
                <children>
-                  <Button alignment="CENTER" mnemonicParsing="false" prefHeight="44.0" prefWidth="249.0" onAction="#loginPressed"  style="-fx-background-radius: 25;" text="Login">
+                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#loginPressed" prefHeight="44.0" prefWidth="249.0" style="-fx-background-radius: 25;" text="Login">
                      <font>
                         <Font size="20.0" />
                      </font>
