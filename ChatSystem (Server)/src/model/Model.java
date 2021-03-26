@@ -16,4 +16,6 @@ public interface Model extends NamedPropertyChangeSubject
       throws IllegalStateException, IllegalArgumentException;
   boolean contains(User user);
   void addMessage(Message message);
+  void removeUser(UserName userName) throws IllegalStateException, IllegalArgumentException;
+
 }

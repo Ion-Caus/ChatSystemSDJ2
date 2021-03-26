@@ -45,24 +45,31 @@ public class ChatClientHandler implements Runnable, PropertyChangeListener {
                 MessagePackage requestPackage = gson.fromJson(requestJson, MessagePackage.class);
                 MessagePackage replyPackage;
 
-                if (requestPackage.getType().equalsIgnoreCase("Login")) {
-                    try {
-                        UserName userName =  new UserName(requestPackage.getSource());
-                        model.addUser(userName);
-                        replyPackage = new MessagePackage("Login", userName.getName());
-                    }
-                    catch (Exception e) {
-                        replyPackage = new MessagePackage("Error", e.getMessage());
-                    }
+              if (requestPackage.getType().equalsIgnoreCase("Login")) {
+                try {
+                  UserName userName = new UserName(requestPackage.getSource());
+                  model.addUser(userName);
+                  replyPackage = new MessagePackage("Login", userName.getName());
                 }
-                else {
-                    model.addMessage(
-                            requestPackage.getMessage().addUserIp(socket.getInetAddress().getHostAddress())
-                    );
-                    replyPackage = requestPackage;
+                catch (Exception e) {
+                  replyPackage = new MessagePackage("Error", e.getMessage());
                 }
-
                 out.println(gson.toJson(replyPackage));
+              }
+              else if (requestPackage.getType().equalsIgnoreCase("Logout")) {
+                UserName userName = new UserName(requestPackage.getSource());
+                try {
+                  model.removeUser(userName);
+                }
+                catch (Exception e) {
+                  System.out.println(e.getMessage());
+                }
+              }
+              else {
+                model.addMessage(requestPackage.getMessage()
+                    .addUserIp(socket.getInetAddress().getHostAddress()));
+                out.println(gson.toJson(requestPackage));
+              }
 
             } catch (Exception e) {
                 e.printStackTrace();

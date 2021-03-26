@@ -8,10 +8,10 @@ import viewmodel.ViewModelFactory;
 import java.io.IOException;
 
 public class MyApplication extends Application {
-
+  private Model model;
   public void start(Stage primaryStage) {
     try {
-      Model model = new ModelManager();
+      model = new ModelManager();
       ViewModelFactory viewModelFactory = new ViewModelFactory(model);
       ViewHandler view = new ViewHandler(viewModelFactory);
 
@@ -20,5 +20,10 @@ public class MyApplication extends Application {
     catch (Exception e) {
       e.printStackTrace();
     }
+  }
+
+  @Override
+  public void stop(){
+    model.logout();
   }
 }

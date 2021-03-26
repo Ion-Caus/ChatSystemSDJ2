@@ -25,6 +25,12 @@ public class ModelManager implements Model
     propertyChangeSupport.firePropertyChange("Message", null, message);
   }
 
+  @Override public void removeUser(UserName userName)
+      throws IllegalStateException, IllegalArgumentException
+  {
+    users.removeUser(userName);
+  }
+
   @Override public int getNumberOfUsers()
   {
     return users.size();

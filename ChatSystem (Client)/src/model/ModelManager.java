@@ -32,6 +32,10 @@ public class ModelManager implements Model, PropertyChangeListener {
         chatClient.login(username);
     }
 
+    @Override public void logout() {
+        chatClient.logout();
+    }
+
     @Override
     public String getUsername() {
         return chatClient.getUsername();

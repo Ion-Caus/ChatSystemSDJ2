@@ -21,6 +21,10 @@ public class  UserList
     return users.get(index);
   }
 
+  public ArrayList<User> getAllUsers() {
+    return users;
+  }
+
   public User getUserByName(String name)
   {
     for (int i = 0; i < users.size(); i++)
@@ -48,6 +52,13 @@ public class  UserList
   public void addUser(UserName userName)
   {
     addUser(new User(userName));
+  }
+
+  public void removeUser(UserName userName){
+    if(!contains(new User(userName))){
+      throw new IllegalArgumentException("User not found");
+    }
+    users.removeIf(user -> user.getUserName().getName().equals(userName.getName()));
   }
 
   public boolean contains(User user)

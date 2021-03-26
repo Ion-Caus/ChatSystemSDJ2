@@ -111,6 +111,18 @@ public class ChatClient implements Model {
         }
     }
 
+    @Override public void logout() {
+        MessagePackage logoutMessage = new MessagePackage("Logout",this.username);
+        out.println(gson.toJson(logoutMessage));
+        System.out.println("Logging out...");
+        try {
+            waitingForReply();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public String getUsername() {
         return username;
