@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import external.Log;
 import javafx.application.Platform;
 import model.Model;
+import model.UserList;
 import model.UserName;
 
 import java.beans.PropertyChangeEvent;
@@ -21,6 +22,8 @@ public class ChatClientHandler implements Runnable, PropertyChangeListener {
     private Boolean running;
     private Gson gson;
 
+    private UserList userList;
+
     private Model model;
 
     public ChatClientHandler(Socket socket, Model model) throws IOException {
@@ -32,6 +35,9 @@ public class ChatClientHandler implements Runnable, PropertyChangeListener {
 
         this.model = model;
         this.model.addListener("Message", this);
+
+        this.model.addListener("User", this);
+
     }
 
     @Override
@@ -56,6 +62,13 @@ public class ChatClientHandler implements Runnable, PropertyChangeListener {
                 }
                 out.println(gson.toJson(replyPackage));
               }
+
+              else if (requestPackage.getType().equalsIgnoreCase("User"))
+              {
+                UserListPackage userListPackageList = new UserListPackage("User", model.getAllUsers());
+                out.println(gson.toJson(userListPackageList));
+              }
+
               else if (requestPackage.getType().equalsIgnoreCase("Logout")) {
                 UserName userName = new UserName(requestPackage.getSource());
                 try {

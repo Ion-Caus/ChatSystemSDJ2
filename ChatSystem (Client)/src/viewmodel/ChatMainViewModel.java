@@ -8,9 +8,12 @@ import javafx.collections.ObservableList;
 import mediator.Message;
 import mediator.MessagePackage;
 import model.Model;
+import model.User;
+import model.UserList;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 
 public class ChatMainViewModel implements PropertyChangeListener {
     private Model model;
@@ -29,6 +32,9 @@ public class ChatMainViewModel implements PropertyChangeListener {
         this.listUser = FXCollections.observableArrayList();
         model.addListener("Message", this);
         model.addListener("User", this);
+
+        addUsersToList();
+
     }
 
     public ObservableList<String> getChatListProperty() {
@@ -68,6 +74,15 @@ public class ChatMainViewModel implements PropertyChangeListener {
         chatList.add(message.getUsername() + ": " + message.getMessage());
     }
 
+    private void addUsersToList()
+    {
+        ArrayList<User> allUsers = model.getAllUsers();
+        for (int i = 0; i < allUsers.size(); i++)
+        {
+            this.listUser.add(allUsers.get(i).getUserName().getName());
+        }
+    }
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         MessagePackage messagePackage = (MessagePackage)evt.getNewValue();
@@ -78,8 +93,9 @@ public class ChatMainViewModel implements PropertyChangeListener {
                         addMessageToChat(messagePackage.getMessage()
                         );
                         break;
-                    case "User":
-                        break;
+                   // case "User":
+                        //addUsersToList();
+                       // break;
                 }
             });
         }

@@ -5,6 +5,7 @@ import mediator.Message;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 
 public class ModelManager implements Model
 {
@@ -29,6 +30,11 @@ public class ModelManager implements Model
       throws IllegalStateException, IllegalArgumentException
   {
     users.removeUser(userName);
+  }
+
+  @Override public ArrayList<User> getAllUsers()
+  {
+    return users.getAllUsers();
   }
 
   @Override public int getNumberOfUsers()

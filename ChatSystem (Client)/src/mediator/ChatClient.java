@@ -2,6 +2,7 @@ package mediator;
 
 import com.google.gson.Gson;
 import model.Model;
+import model.User;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -11,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class ChatClient implements Model {
     private Socket socket;
@@ -19,6 +21,7 @@ public class ChatClient implements Model {
     private Gson gson;
 
     private MessagePackage receivedMessage;
+    private UserListPackage receivedListPackage;
     private boolean waiting;
     private PropertyChangeSupport property;
 
@@ -68,14 +71,37 @@ public class ChatClient implements Model {
         return returnMessage;
     }
 
+    private synchronized UserListPackage waitingForReplyList()
+        throws InterruptedException
+    {
+        while (receivedListPackage == null)
+        {
+            waiting = true;
+            wait();
+        }
+        waiting = false;
+
+        UserListPackage listPackage = receivedListPackage;
+        receivedListPackage = null;
+
+        return listPackage;
+    }
+
 
     public synchronized void receive(String requestJson){
+
         MessagePackage requestMessage = gson.fromJson(requestJson, MessagePackage.class);
         if (requestMessage == null) {
             disconnect();
         }
         if (waiting) {
             receivedMessage = requestMessage;
+            notify();
+        }
+        if (gson.fromJson(requestJson, Map.class).get("type").equals("User"))
+        {
+            receivedListPackage = gson
+                .fromJson(requestJson, UserListPackage.class);
             notify();
         }
         else {
@@ -126,6 +152,22 @@ public class ChatClient implements Model {
     @Override
     public String getUsername() {
         return username;
+    }
+
+    @Override public ArrayList<User> getAllUsers()
+    {
+
+        UserListPackage user = new UserListPackage("User", null);
+        out.println(gson.toJson(user));
+        try
+        {
+            return waitingForReplyList().getUsers();
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
