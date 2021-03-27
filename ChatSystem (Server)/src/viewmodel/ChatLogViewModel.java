@@ -23,6 +23,8 @@ public class ChatLogViewModel implements PropertyChangeListener
     this.logs = FXCollections.observableArrayList();
     this.message = new SimpleStringProperty();
     model.addListener("Message", this);
+    model.addListener("UserAdded",this);
+    model.addListener("UserLeft",this);
   }
 
   public ObservableList<String> getLogs() {
@@ -48,11 +50,37 @@ public class ChatLogViewModel implements PropertyChangeListener
 
   @Override public void propertyChange(PropertyChangeEvent evt)
   {
-    Platform.runLater(
-            () -> {
-              Message message =  (Message)evt.getNewValue();
-              logs.add(message.toString());
+
+    switch (evt.getPropertyName()) {
+      case "Message": {
+        Platform.runLater(() -> {
+          Message message = (Message) evt.getNewValue();
+          logs.add(message.toString());
+        });
+        break;
+      }
+      case "UserAdded":{
+        Platform.runLater(
+            ()-> {
+              model.addMessage(
+                  new Message( "", "New user joined the server: "+evt.getNewValue().toString())
+              );
             }
-    );
+        );
+        break;
+      }
+      case "UserLeft":{
+        Platform.runLater(
+            ()->{
+              model.addMessage(
+                  new Message( "", "User: "+evt.getNewValue().toString()+" has left the chat")
+              );
+            }
+        );
+        break;
+      }
+    }
+
+
   }
 }

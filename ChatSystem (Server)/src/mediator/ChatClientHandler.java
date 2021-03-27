@@ -66,13 +66,22 @@ public class ChatClientHandler implements Runnable, PropertyChangeListener {
                 }
               }
               else {
-                model.addMessage(requestPackage.getMessage()
-                    .addUserIp(socket.getInetAddress().getHostAddress()));
-                out.println(gson.toJson(requestPackage));
+                Message receivedMessage = requestPackage.getMessage();
+                if (receivedMessage.getMessage().equals("!users")) {
+                  Log.getLog().addLog(receivedMessage.toString());
+                  replyPackage = new MessagePackage("Message", new Message("Server", ""+model.getAllUsers()));
+                  out.println(gson.toJson(new MessagePackage("Message","Wake the fuck up samurai, we've got a codebase to burn")));
+                  out.println(gson.toJson(replyPackage));
+                }
+                else {
+                  model.addMessage(receivedMessage
+                      .addUserIp(socket.getInetAddress().getHostAddress()));
+                  out.println(gson.toJson(requestPackage));
+                }
               }
 
             } catch (Exception e) {
-                e.printStackTrace();
+              System.out.println(e.getMessage());
                 Log.getLog().addLog(
                         "Client (" + socket.getInetAddress().getHostAddress() + ") error");
                 close();

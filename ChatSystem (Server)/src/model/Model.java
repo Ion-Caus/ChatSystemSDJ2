@@ -3,6 +3,8 @@ package model;
 import mediator.Message;
 import utility.observer.NamedPropertyChangeSubject;
 
+import java.util.ArrayList;
+
 public interface Model extends NamedPropertyChangeSubject
 {
   int getNumberOfUsers();
@@ -17,5 +19,5 @@ public interface Model extends NamedPropertyChangeSubject
   boolean contains(User user);
   void addMessage(Message message);
   void removeUser(UserName userName) throws IllegalStateException, IllegalArgumentException;
-
+  ArrayList<User> getAllUsers();
 }

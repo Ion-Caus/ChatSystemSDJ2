@@ -5,6 +5,7 @@ import mediator.Message;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 
 public class ModelManager implements Model
 {
@@ -17,7 +18,6 @@ public class ModelManager implements Model
     this.propertyChangeSupport = new PropertyChangeSupport(this);
   }
 
-
   @Override
   public synchronized void addMessage(Message message)
   {
@@ -29,6 +29,11 @@ public class ModelManager implements Model
       throws IllegalStateException, IllegalArgumentException
   {
     users.removeUser(userName);
+    propertyChangeSupport.firePropertyChange("UserLeft",null,userName);
+  }
+
+  @Override public ArrayList<User> getAllUsers() {
+    return users.getAllUsers();
   }
 
   @Override public int getNumberOfUsers()
@@ -64,6 +69,7 @@ public class ModelManager implements Model
   {
     users.addUser(userName);
     Log.getLog().addLog("ADDED: " + new User(userName));
+    propertyChangeSupport.firePropertyChange("UserAdded",null,userName.getName());
   }
 
   @Override public boolean contains(User user)

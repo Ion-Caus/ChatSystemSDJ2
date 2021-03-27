@@ -26,6 +26,7 @@ public class ChatClient implements Model {
 
     private String username;
 
+
     public ChatClient(String host, int port) throws IOException {
         this.socket = new Socket(host, port);
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -35,17 +36,17 @@ public class ChatClient implements Model {
         property = new PropertyChangeSupport(this);
 
         chatClientReader = new ChatClientReader(this, in);
-        Thread chatClientReaderThread= new Thread(chatClientReader);
+        Thread chatClientReaderThread = new Thread(chatClientReader);
         chatClientReaderThread.setDaemon(true);
         chatClientReaderThread.start();
     }
 
     public void disconnect() {
         try {
-            chatClientReader.close();
             socket.close();
             in.close();
             out.close();
+            chatClientReader.close();
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -81,7 +82,6 @@ public class ChatClient implements Model {
         else {
             property.firePropertyChange("Message", null, requestMessage);
         }
-
     }
 
     @Override
@@ -115,12 +115,13 @@ public class ChatClient implements Model {
         MessagePackage logoutMessage = new MessagePackage("Logout",this.username);
         out.println(gson.toJson(logoutMessage));
         System.out.println("Logging out...");
-        try {
-            waitingForReply();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            waitingForReply();
+//        }
+//        catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        // TODO THIS CAUSES AN INFINITE LOOP UPON CLOSING THE WINDOW
     }
 
     @Override
