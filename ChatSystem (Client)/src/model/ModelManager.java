@@ -7,6 +7,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class ModelManager implements Model, PropertyChangeListener {
     public static final String HOST = "localhost";
@@ -20,6 +21,12 @@ public class ModelManager implements Model, PropertyChangeListener {
         chatClient = new ChatClient( HOST, PORT);
         chatClient.addListener("Login", this);
         chatClient.addListener("Message", this);
+        chatClient.addListener("User", this);
+    }
+
+    @Override
+    public ArrayList<String> getAllUsers() {
+        return chatClient.getAllUsers();
     }
 
     @Override

@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class ChatClient implements Model {
     private Socket socket;
@@ -18,7 +19,8 @@ public class ChatClient implements Model {
     private PrintWriter out;
     private Gson gson;
 
-    private MessagePackage receivedMessage;
+    private MessagePackage receivedMessagePackage;
+    private UserListPackage receivedListPackage;
     private boolean waiting;
     private PropertyChangeSupport property;
 
@@ -52,15 +54,28 @@ public class ChatClient implements Model {
         }
     }
 
-    public synchronized MessagePackage waitingForReply() throws Exception {
-        while (receivedMessage == null){
+    private synchronized UserListPackage waitingForReplyList() throws InterruptedException {
+        while (receivedListPackage == null){
             waiting = true;
             wait();
         }
         waiting = false;
 
-        MessagePackage returnMessage = receivedMessage;
-        receivedMessage = null;
+        UserListPackage listPackage = receivedListPackage;
+        receivedListPackage = null;
+
+        return listPackage;
+    }
+
+    public synchronized MessagePackage waitingForReply() throws Exception {
+        while (receivedMessagePackage == null){
+            waiting = true;
+            wait();
+        }
+        waiting = false;
+
+        MessagePackage returnMessage = receivedMessagePackage;
+        receivedMessagePackage = null;
 
         if (returnMessage.getType().equalsIgnoreCase("Error")) {
             throw new Exception(returnMessage.getSource());
@@ -70,16 +85,24 @@ public class ChatClient implements Model {
 
 
     public synchronized void receive(String requestJson){
-        MessagePackage requestMessage = gson.fromJson(requestJson, MessagePackage.class);
-        if (requestMessage == null) {
+        System.out.println(requestJson);
+        if (requestJson == null) {
             disconnect();
+            return;
         }
-        if (waiting) {
-            receivedMessage = requestMessage;
+        if (gson.fromJson(requestJson, Map.class).get("type").equals("All")) {
+            receivedListPackage = gson.fromJson(requestJson, UserListPackage.class);
             notify();
         }
         else {
-            property.firePropertyChange("Message", null, requestMessage);
+            MessagePackage requestMessage = gson.fromJson(requestJson, MessagePackage.class);
+            if (waiting && !requestMessage.getType().equals("User")) {
+                receivedMessagePackage = requestMessage;
+                notify();
+            }
+            else {
+                property.firePropertyChange(requestMessage.getType(), null, requestMessage);
+            }
         }
 
     }
@@ -115,12 +138,19 @@ public class ChatClient implements Model {
         MessagePackage logoutMessage = new MessagePackage("Logout",this.username);
         out.println(gson.toJson(logoutMessage));
         System.out.println("Logging out...");
+    }
+
+    @Override
+    public ArrayList<String> getAllUsers() {
+        MessagePackage requestPackage = new MessagePackage("Users", "Get all active users in the group chat");
+        out.println(gson.toJson(requestPackage));
         try {
-            waitingForReply();
+            return waitingForReplyList().getUsers();
         }
-        catch (Exception e) {
+        catch (InterruptedException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     @Override

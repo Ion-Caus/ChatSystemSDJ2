@@ -29,6 +29,13 @@ public class ChatMainViewModel implements PropertyChangeListener {
         this.listUser = FXCollections.observableArrayList();
         model.addListener("Message", this);
         model.addListener("User", this);
+
+        loadFromModel();
+    }
+
+    private void loadFromModel() {
+        listUser.clear();
+        listUser.addAll(model.getAllUsers());
     }
 
     public ObservableList<String> getChatListProperty() {
@@ -68,20 +75,33 @@ public class ChatMainViewModel implements PropertyChangeListener {
         chatList.add(message.getUsername() + ": " + message.getMessage());
     }
 
+    private void addUser(String username) {
+        listUser.add(username);
+        System.out.println(listUser);
+    }
+
+    private void removeUser(String username) {
+        listUser.remove(username);
+    }
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        MessagePackage messagePackage = (MessagePackage)evt.getNewValue();
-        if (messagePackage != null) {
-            Platform.runLater(() -> {
-                switch (evt.getPropertyName()) {
-                    case "Message":
-                        addMessageToChat(messagePackage.getMessage()
-                        );
-                        break;
-                    case "User":
-                        break;
-                }
-            });
-        }
+        Platform.runLater(() -> {
+            MessagePackage mPackage = (MessagePackage)evt.getNewValue();
+            switch (evt.getPropertyName()) {
+                case "Message":
+                    addMessageToChat( mPackage.getMessage());
+                    break;
+                case "User":
+                    String[] instruction = mPackage.getSource().split(" ");
+                    if (instruction[0].equals("Add")) {
+                        addUser( instruction[1]);
+                    }
+                    else if (instruction[0].equals("Remove") ) {
+                        removeUser(instruction[1]);
+                    }
+                    break;
+            }
+        });
     }
 }

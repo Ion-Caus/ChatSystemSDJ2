@@ -61,6 +61,14 @@ public class  UserList
     users.removeIf(user -> user.getUserName().getName().equals(userName.getName()));
   }
 
+  public ArrayList<String> getAllUsernames() {
+    ArrayList<String> usernames = new ArrayList<>();
+    for (User user: users) {
+      usernames.add(user.getUserName().getName());
+    }
+    return usernames;
+  }
+
   public boolean contains(User user)
   {
     if (user == null)

@@ -32,6 +32,7 @@ public class ChatClientHandler implements Runnable, PropertyChangeListener {
 
         this.model = model;
         this.model.addListener("Message", this);
+        this.model.addListener("User", this);
     }
 
     @Override
@@ -41,35 +42,42 @@ public class ChatClientHandler implements Runnable, PropertyChangeListener {
         while (running) {
             try {
                 String requestJson = in.readLine();
+                System.out.println(requestJson);
 
                 MessagePackage requestPackage = gson.fromJson(requestJson, MessagePackage.class);
                 MessagePackage replyPackage;
 
-              if (requestPackage.getType().equalsIgnoreCase("Login")) {
-                try {
-                  UserName userName = new UserName(requestPackage.getSource());
-                  model.addUser(userName);
-                  replyPackage = new MessagePackage("Login", userName.getName());
+                assert requestPackage != null;
+                switch (requestPackage.getType()) {
+                    case "Login":
+                        try {
+                            UserName userName = new UserName(requestPackage.getSource());
+                            model.addUser(userName);
+                            replyPackage = new MessagePackage("Login", userName.getName());
+                        }
+                        catch (Exception e) {
+                            replyPackage = new MessagePackage("Error", e.getMessage());
+                        }
+                        out.println(gson.toJson(replyPackage));
+                        break;
+                    case "Logout":
+                        UserName userName = new UserName(requestPackage.getSource());
+                        try {
+                            model.removeUser(userName);
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                        break;
+                    case "Users" :
+                        UserListPackage listPackage = new UserListPackage("All" ,model.getAllUsers());
+                        out.println(gson.toJson(listPackage));
+                        break;
+                    case "Message" :
+                        model.addMessage(requestPackage.getMessage().addUserIp(socket.getInetAddress().getHostAddress()));
+                        out.println(gson.toJson(requestPackage));
+                        System.out.println(gson.toJson(requestPackage));
+                        break;
                 }
-                catch (Exception e) {
-                  replyPackage = new MessagePackage("Error", e.getMessage());
-                }
-                out.println(gson.toJson(replyPackage));
-              }
-              else if (requestPackage.getType().equalsIgnoreCase("Logout")) {
-                UserName userName = new UserName(requestPackage.getSource());
-                try {
-                  model.removeUser(userName);
-                }
-                catch (Exception e) {
-                  System.out.println(e.getMessage());
-                }
-              }
-              else {
-                model.addMessage(requestPackage.getMessage()
-                    .addUserIp(socket.getInetAddress().getHostAddress()));
-                out.println(gson.toJson(requestPackage));
-              }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -81,28 +89,46 @@ public class ChatClientHandler implements Runnable, PropertyChangeListener {
         close();
     }
 
-    public void close()
-    {
+    public void close() {
         running = false;
         try {
             in.close();
             out.close();
             socket.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             //
         }
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        Platform.runLater(() -> out.println(
-                gson.toJson(
+        Platform.runLater(() -> {
+            if (evt.getPropertyName().equals("Message")) {
+                System.out.println(gson.toJson(
                         new MessagePackage(
                                 "Message",
-                                ( (Message)evt.getNewValue()).removeUserIp()
+                                ((Message) evt.getNewValue()).removeUserIp()
                         )
-                )
-        ));
+                ));
+                out.println(
+                        gson.toJson(
+                                new MessagePackage(
+                                        "Message",
+                                        ((Message) evt.getNewValue()).removeUserIp()
+                                )
+                        )
+                );
+            }
+            else {
+                out.println(
+                        gson.toJson(
+                                new MessagePackage(
+                                        evt.getPropertyName(),
+                                        evt.getOldValue() + " " + evt.getNewValue()
+                                )
+                        )
+                );
+            }
+        });
     }
 }
