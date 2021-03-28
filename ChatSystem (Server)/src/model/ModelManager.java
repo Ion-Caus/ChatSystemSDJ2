@@ -31,7 +31,6 @@ public class ModelManager implements Model
     {
         users.removeUser(userName);
         propertyChangeSupport.firePropertyChange("User", "Remove", userName.getName());
-
     }
 
     @Override
