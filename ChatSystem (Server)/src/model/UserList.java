@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-public class  UserList
+public class UserList
 {
   private ArrayList<User> users;
 

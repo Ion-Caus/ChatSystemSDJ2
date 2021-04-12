@@ -1,0 +1,19 @@
+12/04/2021 15:52:16: Starting Server...
+12/04/2021 15:52:16: Waiting for a client...
+12/04/2021 15:52:54: Client (127.0.0.1) connected.
+12/04/2021 15:52:54: Waiting for a client...
+12/04/2021 15:53:03: Client (127.0.0.1) connected.
+12/04/2021 15:53:03: Waiting for a client...
+12/04/2021 15:53:20: Server: New user joined the server: UserName1 
+12/04/2021 15:53:20: ADDED: UserName1
+12/04/2021 15:53:25: ADDED: UserName2
+12/04/2021 15:53:25: Server: New user joined the server: UserName2 
+12/04/2021 15:54:12: Server: UserName1 has left the chat 
+12/04/2021 15:54:13: Client (127.0.0.1) error
+12/04/2021 15:54:15: Server: UserName2 has left the chat 
+12/04/2021 15:54:15: Client (127.0.0.1) error
+12/04/2021 15:55:28: Client (127.0.0.1) connected.
+12/04/2021 15:55:28: Waiting for a client...
+12/04/2021 15:55:35: Server: New user joined the server: whatsup 
+12/04/2021 15:55:35: ADDED: whatsup
+12/04/2021 17:02:12: Error: Socket closed

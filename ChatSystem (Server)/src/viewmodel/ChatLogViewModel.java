@@ -1,18 +1,19 @@
 package viewmodel;
 
-import external.Log;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import mediator.Message;
+import model.Message;
 import model.Model;
+import utility.observer.event.ObserverEvent;
+import utility.observer.listener.LocalListener;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class ChatLogViewModel implements PropertyChangeListener
+public class ChatLogViewModel implements LocalListener<Object,Object>
 {
   private Model model;
   private ObservableList<String> logs;
@@ -22,8 +23,8 @@ public class ChatLogViewModel implements PropertyChangeListener
     this.model = model;
     this.logs = FXCollections.observableArrayList();
     this.message = new SimpleStringProperty();
-    model.addListener("Message", this);
-    model.addListener("User",this);
+    model.addListener(this,"Message");
+    model.addListener(this,"User");
   }
 
   public ObservableList<String> getLogs() {
@@ -47,13 +48,12 @@ public class ChatLogViewModel implements PropertyChangeListener
     }
   }
 
-  @Override public void propertyChange(PropertyChangeEvent evt)
-  {
 
+  @Override public void propertyChange(ObserverEvent<Object, Object> evt) {
     switch (evt.getPropertyName()) {
       case "Message": {
         Platform.runLater(() -> {
-          Message message = (Message) evt.getNewValue();
+          Message message = (Message) evt.getValue2();
           logs.add(message.toString());
         });
         break;
@@ -61,13 +61,13 @@ public class ChatLogViewModel implements PropertyChangeListener
       case "User": {
 
         Platform.runLater(() -> {
-          if (evt.getOldValue().toString().equals("Add")) {
+          if (evt.getValue1().toString().equals("Add")) {
             model.addMessage(new Message("Server",
-                "New user joined the server: " + evt.getNewValue().toString()));
+                "New user joined the server: " + evt.getValue2().toString()));
           }
           else {
             model.addMessage(new Message("Server",
-                evt.getNewValue().toString() + " has left the chat"));
+                evt.getValue2().toString() + " has left the chat"));
           }
         });
         break;

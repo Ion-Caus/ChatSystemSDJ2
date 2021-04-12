@@ -1,5 +1,7 @@
 package mediator;
 
+import model.Message;
+
 public class MessagePackage {
 
     private String type;

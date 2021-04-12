@@ -1,4 +1,4 @@
-package mediator;
+package model;
 
 public class Message {
 

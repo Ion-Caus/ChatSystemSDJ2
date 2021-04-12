@@ -1,21 +1,20 @@
 package model;
 
 import external.Log;
-import mediator.Message;
+import utility.observer.listener.GeneralListener;
+import utility.observer.subject.PropertyChangeHandler;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
 public class ModelManager implements Model
 {
     private UserList users;
-    private PropertyChangeSupport propertyChangeSupport;
+    private PropertyChangeHandler<Object,Object> property;
 
     public ModelManager()
     {
         this.users = new UserList();
-        this.propertyChangeSupport = new PropertyChangeSupport(this);
+        this.property = new PropertyChangeHandler<>(this);
     }
 
 
@@ -23,14 +22,14 @@ public class ModelManager implements Model
     public synchronized void addMessage(Message message)
     {
         Log.getLog().addLog(message.toString());
-        propertyChangeSupport.firePropertyChange("Message", null, message);
+        property.firePropertyChange("Message", null, message);
     }
 
     @Override public void removeUser(UserName userName)
             throws IllegalStateException, IllegalArgumentException
     {
         users.removeUser(userName);
-        propertyChangeSupport.firePropertyChange("User", "Remove", userName.getName());
+        property.firePropertyChange("User", "Remove", userName.getName());
     }
 
     @Override
@@ -57,7 +56,7 @@ public class ModelManager implements Model
             throws IllegalStateException, IllegalArgumentException
     {
         users.addUser(user);
-        propertyChangeSupport.firePropertyChange("User", "Add", user.getUserName().getName());
+        property.firePropertyChange("User", "Add", user.getUserName().getName());
         Log.getLog().addLog("ADDED: " + user);
     }
 
@@ -71,7 +70,7 @@ public class ModelManager implements Model
             throws IllegalStateException, IllegalArgumentException
     {
         users.addUser(userName);
-        propertyChangeSupport.firePropertyChange("User", "Add", userName.getName());
+        property.firePropertyChange("User", "Add", userName.getName());
         Log.getLog().addLog("ADDED: " + new User(userName));
     }
 
@@ -80,15 +79,15 @@ public class ModelManager implements Model
         return users.contains(user);
     }
 
-    @Override public void addListener(String propertyName,
-                                      PropertyChangeListener listener)
+    @Override public boolean addListener(GeneralListener<Object, Object> listener,
+        String... propertyNames)
     {
-        propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
+        return property.addListener(listener, propertyNames);
     }
 
-    @Override public void removeListener(String propertyName,
-                                         PropertyChangeListener listener)
+    @Override public boolean removeListener(GeneralListener<Object, Object> listener,
+        String... propertyNames)
     {
-        propertyChangeSupport.removePropertyChangeListener(propertyName, listener);
+        return property.removeListener(listener, propertyNames);
     }
 }

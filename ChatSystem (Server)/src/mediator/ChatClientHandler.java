@@ -3,6 +3,7 @@ package mediator;
 import com.google.gson.Gson;
 import external.Log;
 import javafx.application.Platform;
+import model.Message;
 import model.Model;
 import model.UserName;
 
@@ -31,8 +32,8 @@ public class ChatClientHandler implements Runnable, PropertyChangeListener {
         this.gson = new Gson();
 
         this.model = model;
-        this.model.addListener("Message", this);
-        this.model.addListener("User", this);
+//        this.model.addListener("Message", this);
+//        this.model.addListener("User", this);
     }
 
     @Override
@@ -100,34 +101,19 @@ public class ChatClientHandler implements Runnable, PropertyChangeListener {
         }
     }
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
+    @Override public void propertyChange(PropertyChangeEvent evt) {
         Platform.runLater(() -> {
             if (evt.getPropertyName().equals("Message")) {
-                System.out.println(gson.toJson(
-                        new MessagePackage(
-                                "Message",
-                                ((Message) evt.getNewValue()).removeUserIp()
-                        )
-                ));
-                out.println(
-                        gson.toJson(
-                                new MessagePackage(
-                                        "Message",
-                                        ((Message) evt.getNewValue()).removeUserIp()
-                                )
-                        )
-                );
+                System.out.println(gson
+                    .toJson(new MessagePackage("Message", ((Message) evt.getNewValue())
+                        .removeUserIp())));
+                out.println(gson
+                    .toJson(new MessagePackage("Message", ((Message) evt.getNewValue())
+                        .removeUserIp())));
             }
             else {
-                out.println(
-                        gson.toJson(
-                                new MessagePackage(
-                                        evt.getPropertyName(),
-                                        evt.getOldValue() + " " + evt.getNewValue()
-                                )
-                        )
-                );
+                out.println(gson.toJson(new MessagePackage(evt.getPropertyName(),
+                    evt.getOldValue() + " " + evt.getNewValue())));
             }
         });
     }

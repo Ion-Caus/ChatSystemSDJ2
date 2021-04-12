@@ -1,11 +1,11 @@
 package model;
 
-import mediator.Message;
 import utility.observer.NamedPropertyChangeSubject;
+import utility.observer.subject.LocalSubject;
 
 import java.util.ArrayList;
 
-public interface Model extends NamedPropertyChangeSubject
+public interface Model extends LocalSubject<Object,Object>
 {
   int getNumberOfUsers();
   User getUser(int index) throws IndexOutOfBoundsException;
