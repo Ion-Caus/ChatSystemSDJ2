@@ -1,5 +1,6 @@
 package mediator;
 
+import javafx.application.Platform;
 import model.Message;
 import model.Model;
 import model.UserName;
@@ -16,17 +17,18 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-public class RemoteModelManager implements RemoteModel, LocalListener<Message,ArrayList<String>>
+public class RemoteModelManager implements RemoteModel, LocalListener<Object,Object>
 {
-  private PropertyChangeHandler<Message,Object> property;
+  private PropertyChangeHandler<Object,Object> property;
   private Model model;
 
   public RemoteModelManager(Model model) throws RemoteException, MalformedURLException {
     this.model = model;
-    this.property = new PropertyChangeHandler<Message, Object>(this);
+    this.property = new PropertyChangeHandler<>(this);
 
     startRegistry();
     startServer();
+    model.addListener(this,"Message");
   }
 
   private void startRegistry() throws RemoteException
@@ -48,14 +50,14 @@ public class RemoteModelManager implements RemoteModel, LocalListener<Message,Ar
     Naming.rebind("Chat", this);
   }
 
-  @Override public void login(UserName userName) {
+  @Override public void login(String userName) {
     model.addUser(userName);
-    property.firePropertyChange("Login",null,userName.getName());
+    property.firePropertyChange("Login",null,userName);
   }
 
-  @Override public void logout(UserName userName) {
-    model.removeUser(userName);
-    property.firePropertyChange("Logout",null,userName.getName());
+  @Override public void logout(String userName) {
+    model.removeUser(new UserName(userName));
+    property.firePropertyChange("Logout",null,userName);
   }
 
   @Override public ArrayList<String> getAllUsers() {
@@ -64,7 +66,6 @@ public class RemoteModelManager implements RemoteModel, LocalListener<Message,Ar
 
   @Override public void addMessage(Message message) {
     model.addMessage(message);
-    property.firePropertyChange("Message",message,null);
   }
 
 
@@ -81,6 +82,6 @@ public class RemoteModelManager implements RemoteModel, LocalListener<Message,Ar
   }
 
   @Override public void propertyChange(ObserverEvent event) {
-
+    Platform.runLater(()->property.firePropertyChange(event));
   }
 }

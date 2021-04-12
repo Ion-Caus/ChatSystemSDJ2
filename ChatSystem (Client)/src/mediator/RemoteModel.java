@@ -1,8 +1,5 @@
 package mediator;
 
-import model.Message;
-import model.UserList;
-import model.UserName;
 import utility.observer.subject.RemoteSubject;
 
 import java.rmi.RemoteException;
@@ -14,5 +11,4 @@ public interface RemoteModel extends RemoteSubject<Object,Object>
   void logout(String userName) throws RemoteException;
   ArrayList<String> getAllUsers() throws RemoteException;
   void addMessage (Message message) throws RemoteException;
-
 }
