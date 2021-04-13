@@ -27,7 +27,7 @@ public class RemoteModelManager implements RemoteModel, LocalListener<Object,Obj
 
     startRegistry();
     startServer();
-    model.addListener(this,"Message");
+    model.addListener(this);
   }
 
   private void startRegistry() throws RemoteException
@@ -51,13 +51,11 @@ public class RemoteModelManager implements RemoteModel, LocalListener<Object,Obj
 
   @Override public String login(String userName) throws IllegalStateException, IllegalArgumentException {
     model.addUser(userName);
-    property.firePropertyChange("Login", null, userName);
     return userName;
   }
 
   @Override public void logout(String userName) {
     model.removeUser(new UserName(userName));
-    property.firePropertyChange("Logout", null, userName);
   }
 
   @Override public ArrayList<String> getAllUsers() {
@@ -69,17 +67,21 @@ public class RemoteModelManager implements RemoteModel, LocalListener<Object,Obj
   }
 
 
-  @Override public boolean addListener(GeneralListener<Object, Object> listener, String... propertyNames) throws RemoteException
+  @Override public boolean addListener(GeneralListener<Object, Object> listener, String... propertyNames)
   {
     return property.addListener(listener,propertyNames);
   }
 
-  @Override public boolean removeListener(GeneralListener<Object, Object> listener, String... propertyNames) throws RemoteException
+  @Override public boolean removeListener(GeneralListener<Object, Object> listener, String... propertyNames)
   {
     return property.removeListener(listener,propertyNames);
   }
 
   @Override public void propertyChange(ObserverEvent<Object, Object> event) {
-    Platform.runLater( () -> property.firePropertyChange(event));
+    Platform.runLater( () ->
+    {
+      System.out.println("RemoteModelMan: " + event);
+      property.firePropertyChange(event.getPropertyName(), event.getValue1(), event.getValue2());
+    });
   }
 }

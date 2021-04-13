@@ -46,7 +46,7 @@ public class RMIChatClient implements ClientModel, RemoteListener<Object, Object
             remoteModel.logout(user);
         }
         catch (RemoteException e) {
-            throw new IllegalStateException(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -77,9 +77,11 @@ public class RMIChatClient implements ClientModel, RemoteListener<Object, Object
     }
 
     @Override
-    public void propertyChange(ObserverEvent event) throws RemoteException {
+    public synchronized void propertyChange(ObserverEvent<Object,Object> event) {
         Platform.runLater( () ->
-            property.firePropertyChange(event)
+                {
+                    System.out.println("RMIClient: " + event);
+                    property.firePropertyChange(event.getPropertyName(), event.getValue1(), event.getValue2());}
         );
     }
 

@@ -2,18 +2,14 @@ package model;
 
 import javafx.application.Platform;
 import mediator.ClientModel;
-import mediator.Message;
-import mediator.MessagePackage;
 import mediator.RMIChatClient;
 import utility.observer.event.ObserverEvent;
 import utility.observer.listener.GeneralListener;
 import utility.observer.listener.LocalListener;
-import utility.observer.subject.LocalSubject;
 import utility.observer.subject.PropertyChangeHandler;
 
 import java.io.IOException;
 import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class ModelManager implements Model, LocalListener<Object, Object> {
@@ -23,7 +19,7 @@ public class ModelManager implements Model, LocalListener<Object, Object> {
     public ModelManager() throws IOException, NotBoundException {
         property = new PropertyChangeHandler<>(this);
         clientModel = new RMIChatClient();
-        clientModel.addListener(this, "Message", "Login", "Logout");
+        clientModel.addListener(this);
     }
 
     @Override
@@ -38,6 +34,7 @@ public class ModelManager implements Model, LocalListener<Object, Object> {
 
     @Override
     public void sendMessage(String message) {
+        System.out.println("Model Manager : " + message);
         clientModel.addMessage(message);
     }
 

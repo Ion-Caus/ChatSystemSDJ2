@@ -5,8 +5,6 @@ import model.ModelManager;
 import view.ViewHandler;
 import viewmodel.ViewModelFactory;
 
-import java.io.IOException;
-
 public class MyApplication extends Application {
   private Model model;
   public void start(Stage primaryStage) {
@@ -24,6 +22,7 @@ public class MyApplication extends Application {
 
   @Override
   public void stop(){
+    System.out.println("Logout: " + model.getUsername());
     if (model.getUsername() != null) {
       model.logout();
     }

@@ -6,13 +6,10 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import mediator.Message;
-import mediator.MessagePackage;
 import model.Model;
 import utility.observer.event.ObserverEvent;
 import utility.observer.listener.LocalListener;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 public class ChatMainViewModel implements LocalListener<Object, Object> {
     private Model model;
@@ -29,7 +26,7 @@ public class ChatMainViewModel implements LocalListener<Object, Object> {
         this.loggedInAs = new SimpleStringProperty();
         this.error = new SimpleStringProperty();
         this.listUser = FXCollections.observableArrayList();
-        model.addListener(this, "Message", "Login", "logout");
+        model.addListener(this);
 
         loadFromModel();
     }
@@ -88,6 +85,7 @@ public class ChatMainViewModel implements LocalListener<Object, Object> {
     @Override
     public void propertyChange(ObserverEvent<Object, Object> event) {
         Platform.runLater(() -> {
+            System.out.println("ViewModel" +event);
             switch (event.getPropertyName()) {
                 case "Message":
                     addMessageToChat((Message) event.getValue2());
