@@ -8,6 +8,7 @@ import utility.observer.subject.PropertyChangeHandler;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.NoSuchObjectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -56,9 +57,9 @@ public class RMIChatClient implements ClientModel, RemoteListener<Object, Object
             return remoteModel.getAllUsers();
         }
         catch (RemoteException e) {
-            throw new IllegalStateException(e.getMessage());
+            e.printStackTrace();
         }
-
+        return new ArrayList<>();
     }
 
     @Override
@@ -67,7 +68,7 @@ public class RMIChatClient implements ClientModel, RemoteListener<Object, Object
             remoteModel.addMessage(new Message(user, message));
         }
         catch (RemoteException e) {
-            throw new IllegalStateException(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -79,10 +80,18 @@ public class RMIChatClient implements ClientModel, RemoteListener<Object, Object
     @Override
     public synchronized void propertyChange(ObserverEvent<Object,Object> event) {
         Platform.runLater( () ->
-                {
-                    System.out.println("RMIClient: " + event);
-                    property.firePropertyChange(event.getPropertyName(), event.getValue1(), event.getValue2());}
+                    property.firePropertyChange(event.getPropertyName(), event.getValue1(), event.getValue2())
         );
+    }
+
+    @Override
+    public void close() {
+        try {
+            UnicastRemoteObject.unexportObject(this, true);
+        }
+        catch (NoSuchObjectException e) {
+            // do nothing
+        }
     }
 
     @Override

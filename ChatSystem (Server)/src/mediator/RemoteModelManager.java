@@ -10,6 +10,7 @@ import utility.observer.subject.PropertyChangeHandler;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.NoSuchObjectException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -47,6 +48,14 @@ public class RemoteModelManager implements RemoteModel, LocalListener<Object,Obj
   {
     UnicastRemoteObject.exportObject(this, 0);
     Naming.rebind("Chat", this);
+  }
+
+  public void close() {
+    try {
+      UnicastRemoteObject.unexportObject(this, true);
+    } catch (NoSuchObjectException e) {
+      // do nothing
+    }
   }
 
   @Override public String login(String userName) throws IllegalStateException, IllegalArgumentException {

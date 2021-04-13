@@ -34,7 +34,6 @@ public class ModelManager implements Model, LocalListener<Object, Object> {
 
     @Override
     public void sendMessage(String message) {
-        System.out.println("Model Manager : " + message);
         clientModel.addMessage(message);
     }
 
@@ -52,6 +51,11 @@ public class ModelManager implements Model, LocalListener<Object, Object> {
         Platform.runLater( () ->
                 property.firePropertyChange(event)
         );
+    }
+
+    @Override
+    public void close() {
+        clientModel.close();
     }
 
     @Override

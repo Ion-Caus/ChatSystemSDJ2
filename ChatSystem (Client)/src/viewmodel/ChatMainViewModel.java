@@ -85,7 +85,6 @@ public class ChatMainViewModel implements LocalListener<Object, Object> {
     @Override
     public void propertyChange(ObserverEvent<Object, Object> event) {
         Platform.runLater(() -> {
-            System.out.println("ViewModel" +event);
             switch (event.getPropertyName()) {
                 case "Message":
                     addMessageToChat((Message) event.getValue2());

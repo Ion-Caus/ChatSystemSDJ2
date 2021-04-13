@@ -11,4 +11,5 @@ public interface ClientModel extends LocalSubject<Object, Object>
   ArrayList<String> getAllUsers();
   void addMessage (String message);
   String getUsername();
+  void close();
 }

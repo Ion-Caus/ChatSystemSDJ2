@@ -10,27 +10,28 @@ import viewmodel.ViewModelFactory;
 import java.net.MalformedURLException;
 import java.rmi.RemoteException;
 
-public class MyApplication extends Application
-{
-  private Model model;
-  private RemoteModel server;
+public class MyApplication extends Application {
+    private Model model;
+    private RemoteModel server;
 
-  @Override public void start(Stage stage)
-  {
-    model = new ModelManager();
-    ViewModelFactory viewModelFactory = new ViewModelFactory(model);
-    ViewHandler viewHandler = new ViewHandler(viewModelFactory);
-    viewHandler.start(stage);
+    @Override
+    public void start(Stage stage) {
+        model = new ModelManager();
+        ViewModelFactory viewModelFactory = new ViewModelFactory(model);
+        ViewHandler viewHandler = new ViewHandler(viewModelFactory);
+        viewHandler.start(stage);
 
-    // starting server...
+        // starting server...
 
-    try {
-      server = new RemoteModelManager(model);
+        try {
+            server = new RemoteModelManager(model);
+        } catch (RemoteException | MalformedURLException e) {
+            e.printStackTrace();
+        }
     }
-    catch (RemoteException | MalformedURLException e) {
-      e.printStackTrace();
+
+    @Override
+    public void stop() {
+        ( (RemoteModelManager)server ).close();
     }
-  }
-
-
 }

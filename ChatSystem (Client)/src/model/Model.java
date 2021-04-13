@@ -10,5 +10,6 @@ public interface Model extends LocalSubject<Object, Object> {
     void logout();
     ArrayList<String> getAllUsers();
     String getUsername();
+    void close();
 
 }
