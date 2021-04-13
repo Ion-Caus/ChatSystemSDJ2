@@ -80,6 +80,7 @@ public class ChatMainViewModel implements LocalListener<Object, Object> {
 
     private void removeUser(String username) {
         listUser.remove(username);
+        System.out.println(listUser);
     }
 
     @Override
