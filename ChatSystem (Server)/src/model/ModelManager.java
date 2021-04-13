@@ -25,13 +25,6 @@ public class ModelManager implements Model
         property.firePropertyChange("Message", null, message);
     }
 
-    @Override public void removeUser(UserName userName)
-            throws IllegalStateException, IllegalArgumentException
-    {
-        users.removeUser(userName);
-        property.firePropertyChange("User", "Remove", userName.getName());
-    }
-
     @Override
     public ArrayList<String> getAllUsers() {
         return users.getAllUsernames();
@@ -55,9 +48,7 @@ public class ModelManager implements Model
     @Override public void addUser(User user)
             throws IllegalStateException, IllegalArgumentException
     {
-        users.addUser(user);
-        property.firePropertyChange("User", "Add", user.getUserName().getName());
-        Log.getLog().addLog("ADDED: " + user);
+        addUser(user.getUserName());
     }
 
     @Override public void addUser(String userName)
@@ -70,8 +61,16 @@ public class ModelManager implements Model
             throws IllegalStateException, IllegalArgumentException
     {
         users.addUser(userName);
-        property.firePropertyChange("User", "Add", userName.getName());
+        property.firePropertyChange("Login", null, userName.getName());
         Log.getLog().addLog("ADDED: " + new User(userName));
+    }
+
+    @Override public void removeUser(UserName userName)
+            throws IllegalStateException, IllegalArgumentException
+    {
+        users.removeUser(userName);
+        property.firePropertyChange("Logout", null, userName.getName());
+        Log.getLog().addLog("REMOVED: " + new User(userName));
     }
 
     @Override public boolean contains(User user)

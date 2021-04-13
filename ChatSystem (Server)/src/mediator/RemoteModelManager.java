@@ -52,12 +52,12 @@ public class RemoteModelManager implements RemoteModel, LocalListener<Object,Obj
 
   @Override public void login(String userName) {
     model.addUser(userName);
-    property.firePropertyChange("Login",null,userName);
+    property.firePropertyChange("Login", null, userName);
   }
 
   @Override public void logout(String userName) {
     model.removeUser(new UserName(userName));
-    property.firePropertyChange("Logout",null,userName);
+    property.firePropertyChange("Logout", null, userName);
   }
 
   @Override public ArrayList<String> getAllUsers() {
@@ -82,6 +82,6 @@ public class RemoteModelManager implements RemoteModel, LocalListener<Object,Obj
   }
 
   @Override public void propertyChange(ObserverEvent event) {
-    Platform.runLater(()->property.firePropertyChange(event));
+    Platform.runLater( ()-> property.firePropertyChange(event));
   }
 }
