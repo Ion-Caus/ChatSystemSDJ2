@@ -8,11 +8,13 @@ import javafx.collections.ObservableList;
 import mediator.Message;
 import mediator.MessagePackage;
 import model.Model;
+import utility.observer.event.ObserverEvent;
+import utility.observer.listener.LocalListener;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class ChatMainViewModel implements PropertyChangeListener {
+public class ChatMainViewModel implements LocalListener<Object, Object> {
     private Model model;
     private StringProperty message;
     private StringProperty loggedInAs;
@@ -27,8 +29,7 @@ public class ChatMainViewModel implements PropertyChangeListener {
         this.loggedInAs = new SimpleStringProperty();
         this.error = new SimpleStringProperty();
         this.listUser = FXCollections.observableArrayList();
-        model.addListener("Message", this);
-        model.addListener("User", this);
+        model.addListener(this, "Message", "Login", "logout");
 
         loadFromModel();
     }
@@ -85,22 +86,19 @@ public class ChatMainViewModel implements PropertyChangeListener {
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
+    public void propertyChange(ObserverEvent<Object, Object> event) {
         Platform.runLater(() -> {
-            MessagePackage mPackage = (MessagePackage)evt.getNewValue();
-            switch (evt.getPropertyName()) {
+            switch (event.getPropertyName()) {
                 case "Message":
-                    addMessageToChat( mPackage.getMessage());
+                    addMessageToChat((Message) event.getValue2());
                     break;
-                case "User":
-                    String[] instruction = mPackage.getSource().split(" ");
-                    if (instruction[0].equals("Add")) {
-                        addUser( instruction[1]);
-                    }
-                    else if (instruction[0].equals("Remove") ) {
-                        removeUser(instruction[1]);
-                    }
+                case "Login":
+                    addUser( (String) event.getValue2());
                     break;
+                case "Logout":
+                    removeUser( (String) event.getValue2());
+                    break;
+
             }
         });
     }

@@ -7,8 +7,9 @@ import java.util.ArrayList;
 
 public interface ClientModel extends LocalSubject<Object, Object>
 {
-  void login(String userName) throws RemoteException;
-  void logout(String userName) throws RemoteException;
-  ArrayList<String> getAllUsers() throws RemoteException;
-  void addMessage (Message message) throws RemoteException;
+  void login(String userName);
+  void logout();
+  ArrayList<String> getAllUsers();
+  void addMessage (String message);
+  String getUsername();
 }

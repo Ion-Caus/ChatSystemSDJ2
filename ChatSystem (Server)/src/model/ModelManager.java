@@ -1,6 +1,7 @@
 package model;
 
 import external.Log;
+import mediator.Message;
 import utility.observer.listener.GeneralListener;
 import utility.observer.subject.PropertyChangeHandler;
 

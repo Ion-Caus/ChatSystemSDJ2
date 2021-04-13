@@ -1,14 +1,15 @@
 package model;
 
-import utility.observer.NamedPropertyChangeSubject;
+import utility.observer.subject.LocalSubject;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public interface Model extends NamedPropertyChangeSubject {
+public interface Model extends LocalSubject<Object, Object> {
     void sendMessage(String message);
-    void login(String username) throws Exception;
+    void login(String username);
     void logout();
-    String getUsername();
     ArrayList<String> getAllUsers();
+    String getUsername();
 
 }

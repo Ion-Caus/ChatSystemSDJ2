@@ -24,6 +24,8 @@ public class MyApplication extends Application {
 
   @Override
   public void stop(){
-    model.logout();
+    if (model.getUsername() != null) {
+      model.logout();
+    }
   }
 }

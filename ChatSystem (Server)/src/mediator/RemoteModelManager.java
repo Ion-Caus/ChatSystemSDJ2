@@ -1,7 +1,6 @@
 package mediator;
 
 import javafx.application.Platform;
-import model.Message;
 import model.Model;
 import model.UserName;
 import utility.observer.event.ObserverEvent;
@@ -50,9 +49,10 @@ public class RemoteModelManager implements RemoteModel, LocalListener<Object,Obj
     Naming.rebind("Chat", this);
   }
 
-  @Override public void login(String userName) {
+  @Override public String login(String userName) throws IllegalStateException, IllegalArgumentException {
     model.addUser(userName);
     property.firePropertyChange("Login", null, userName);
+    return userName;
   }
 
   @Override public void logout(String userName) {
@@ -69,19 +69,17 @@ public class RemoteModelManager implements RemoteModel, LocalListener<Object,Obj
   }
 
 
-  @Override public boolean addListener(GeneralListener listener, String... propertyNames)
-      throws RemoteException
+  @Override public boolean addListener(GeneralListener<Object, Object> listener, String... propertyNames) throws RemoteException
   {
     return property.addListener(listener,propertyNames);
   }
 
-  @Override public boolean removeListener(GeneralListener listener,
-      String... propertyNames) throws RemoteException
+  @Override public boolean removeListener(GeneralListener<Object, Object> listener, String... propertyNames) throws RemoteException
   {
     return property.removeListener(listener,propertyNames);
   }
 
-  @Override public void propertyChange(ObserverEvent event) {
-    Platform.runLater( ()-> property.firePropertyChange(event));
+  @Override public void propertyChange(ObserverEvent<Object, Object> event) {
+    Platform.runLater( () -> property.firePropertyChange(event));
   }
 }

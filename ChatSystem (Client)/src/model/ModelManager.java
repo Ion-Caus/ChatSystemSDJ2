@@ -1,74 +1,70 @@
 package model;
 
 import javafx.application.Platform;
-import mediator.ChatClient;
+import mediator.ClientModel;
+import mediator.Message;
+import mediator.MessagePackage;
+import mediator.RMIChatClient;
+import utility.observer.event.ObserverEvent;
+import utility.observer.listener.GeneralListener;
+import utility.observer.listener.LocalListener;
+import utility.observer.subject.LocalSubject;
+import utility.observer.subject.PropertyChangeHandler;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.IOException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public class ModelManager implements Model, PropertyChangeListener {
-    public static final String HOST = "localhost";
-    public static final int PORT = 6789;
+public class ModelManager implements Model, LocalListener<Object, Object> {
+    private PropertyChangeHandler<Object, Object> property;
+    private ClientModel clientModel;
 
-    private PropertyChangeSupport property;
-    private ChatClient chatClient;
-
-    public ModelManager() throws IOException {
-        property = new PropertyChangeSupport(this);
-        chatClient = new ChatClient( HOST, PORT);
-        chatClient.addListener("Login", this);
-        chatClient.addListener("Message", this);
-        chatClient.addListener("User", this);
+    public ModelManager() throws IOException, NotBoundException {
+        property = new PropertyChangeHandler<>(this);
+        clientModel = new RMIChatClient();
+        clientModel.addListener(this, "Message", "Login", "Logout");
     }
 
     @Override
     public ArrayList<String> getAllUsers() {
-        return chatClient.getAllUsers();
-    }
-
-    @Override
-    public void sendMessage(String message) {
-        chatClient.sendMessage(message);
-    }
-
-    @Override
-    public void login(String username) throws Exception {
-        chatClient.login(username);
-    }
-
-    @Override public void logout() {
-        chatClient.logout();
+        return clientModel.getAllUsers();
     }
 
     @Override
     public String getUsername() {
-        return chatClient.getUsername();
+        return clientModel.getUsername();
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
+    public void sendMessage(String message) {
+        clientModel.addMessage(message);
+    }
+
+    @Override
+    public void login(String username) throws IllegalArgumentException {
+        clientModel.login(username);
+    }
+
+    @Override public void logout() {
+        clientModel.logout();
+    }
+
+    @Override
+    public void propertyChange(ObserverEvent<Object, Object> event) {
         Platform.runLater( () ->
-                property.firePropertyChange(
-                        evt.getPropertyName(),
-                        evt.getOldValue(),
-                        evt.getNewValue()
-                )
+                property.firePropertyChange(event)
         );
     }
 
     @Override
-    public void addListener(String nameProperty,
-                            PropertyChangeListener listener) {
-        property.addPropertyChangeListener(nameProperty, listener);
+    public boolean addListener(GeneralListener<Object, Object> listener, String... propertyNames) {
+        return property.addListener(listener, propertyNames);
     }
 
     @Override
-    public void removeListener(String nameProperty,
-                               PropertyChangeListener listener) {
-        property.removePropertyChangeListener(nameProperty, listener);
+    public boolean removeListener(GeneralListener<Object, Object> listener, String... propertyNames) {
+        return property.removeListener(listener, propertyNames);
     }
 
 }

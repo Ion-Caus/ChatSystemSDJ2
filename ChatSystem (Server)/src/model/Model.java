@@ -1,6 +1,6 @@
 package model;
 
-import utility.observer.NamedPropertyChangeSubject;
+import mediator.Message;
 import utility.observer.subject.LocalSubject;
 
 import java.util.ArrayList;

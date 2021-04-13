@@ -5,13 +5,10 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.Message;
+import mediator.Message;
 import model.Model;
 import utility.observer.event.ObserverEvent;
 import utility.observer.listener.LocalListener;
-
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 public class ChatLogViewModel implements LocalListener<Object, Object> {
     private Model model;
